@@ -39,18 +39,25 @@ func main() {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	evaluation := router.Group("/api/v1/evaluation")
-	evaluation.Use(services.AuthorizationRequired())
+	control := router.Group("/api/v1/control")
+	control.Use(services.AuthorizationRequired())
 	{
-		evaluation.POST("/", routes.AddEvaluation)
-		evaluation.GET("/", routes.GetAllEvaluation)
-		evaluation.GET("/:id", routes.GetEvaluationById)
-		evaluation.PUT("/:id", routes.UpdateEvaluation)
-		evaluation.DELETE("/:id", routes.DeleteEvaluation)
+		// Add location (routes.AddLocation)
+		control.POST("/", routes.AddEvaluation)
+		// Will be routes.GetAllLocations (devolve localizações e pessoas através de web sockets)
+		control.GET("/", routes.GetAllEvaluation)
+		// Get all users (rotes.GetAllUsers)
+		control.GET("/users", routes.GetAllUsers)
+		control.GET("/:id", routes.GetEvaluationById)
+		// Update user (rotes.UpdateUser)
+		control.PUT("/:id", routes.UpdateEvaluation)
+		// Delete user (rotes.DeleteUser)
+		control.DELETE("/:id", routes.DeleteEvaluation)
 	}
 
 	auth := router.Group("/api/v1/auth")
 	{
+		// devolve admin=true(Admin) or admin=false(Staff)
 		auth.POST("/login", routes.GenerateToken)
 		auth.POST("/register", routes.RegisterUser)
 		auth.PUT("/refresh_token", services.AuthorizationRequired(), routes.RefreshToken)
