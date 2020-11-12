@@ -39,20 +39,20 @@ func main() {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	control := router.Group("/api/v1/control")
-	control.Use(services.AuthorizationRequired())
+	checkout := router.Group("/api/v1/checkout")
+	checkout.Use(services.AuthorizationRequired())
 	{
 		// Add location (routes.AddLocation)
-		control.POST("/", routes.AddEvaluation)
+		checkout.POST("/", routes.AddEvaluation)
 		// Will be routes.GetAllLocations (devolve localizações e pessoas através de web sockets)
-		control.GET("/", routes.GetAllEvaluation)
+		checkout.GET("/", routes.GetAllEvaluation)
 		// Get all users (rotes.GetAllUsers)
-		control.GET("/users", routes.GetAllUsers)
-		control.GET("/:id", routes.GetEvaluationById)
+		checkout.GET("/users", routes.GetAllUsers)
+		checkout.GET("/:id", routes.GetEvaluationById)
 		// Update user (rotes.UpdateUser)
-		control.PUT("/:id", routes.UpdateEvaluation)
+		checkout.PUT("/:id", routes.UpdateEvaluation)
 		// Delete user (rotes.DeleteUser)
-		control.DELETE("/:id", routes.DeleteEvaluation)
+		checkout.DELETE("/:id", routes.DeleteEvaluation)
 	}
 
 	auth := router.Group("/api/v1/auth")
