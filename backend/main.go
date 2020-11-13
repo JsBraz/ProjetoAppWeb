@@ -1,10 +1,12 @@
 package main
 
 import (
-	"projetoapi/model"
-	"projetoapi/routes"
-	"projetoapi/services"
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/model"
+	"github.com/JsBraz/ProjetoAppWeb/backend/routes"
+	"github.com/JsBraz/ProjetoAppWeb/backend/services"
 
+	// Other imports
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	swaggerFiles "github.com/swaggo/files"

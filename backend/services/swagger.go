@@ -1,7 +1,8 @@
 package services
 
 import (
-	"projetoapi/docs"
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/docs"
 )
 
 func FormatSwagger() {
