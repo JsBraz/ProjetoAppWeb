@@ -50,7 +50,7 @@ func main() {
 		checkout.GET("/", routes.GetAllEvaluation)
 		// Get all users (rotes.GetAllUsers)
 		checkout.GET("/users", routes.GetAllUsers)
-		checkout.GET("/:id", routes.GetEvaluationById)
+		checkout.GET("/:id", routes.GetEvaluationByID)
 		// Update user (rotes.UpdateUser)
 		checkout.PUT("/:id", routes.UpdateEvaluation)
 		// Delete user (rotes.DeleteUser)

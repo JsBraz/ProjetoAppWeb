@@ -90,3 +90,7 @@ func DeleteEvaluation(c *gin.Context) {
 	services.Db.Delete(&evaluation)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeeded!"})
 }
+
+func GetAllUsers(c *gin.Context) {
+
+}
