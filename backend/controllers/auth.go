@@ -42,6 +42,7 @@ func RegisterHandler(c *gin.Context) {
 	}
 	services.OpenDatabase()
 	services.Db.Save(&creds)
+	
 
 	defer services.Db.Close()
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "User ID": creds.ID})

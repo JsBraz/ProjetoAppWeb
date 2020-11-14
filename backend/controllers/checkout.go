@@ -17,11 +17,11 @@ func Echo(c *gin.Context) {
 }
 
 func GetAllEvaluations(c *gin.Context) {
-	var evaluations []model.Evaluation
+	var locations []model.location
 
-	services.Db.Find(&evaluations)
+	services.Db.Find(&locations)
 
-	if len(evaluations) <= 0 {
+	if len(locations) <= 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "None found!"})
 		return
 	}
@@ -30,11 +30,11 @@ func GetAllEvaluations(c *gin.Context) {
 }
 
 func GetEvaluationByID(c *gin.Context) {
-	var evaluation model.Evaluation
+	var location model.Location
 	id := c.Param("id")
 
-	services.Db.First(&evaluation, id)
-	if evaluation.ID == 0 {
+	services.Db.First(&location, id)
+	if location.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Evaluation not found!"})
 		return
 	}
@@ -43,47 +43,47 @@ func GetEvaluationByID(c *gin.Context) {
 }
 
 func UpdateEvaluation(c *gin.Context) {
-	var evaluation model.Evaluation
+	var location model.Location
 
 	id := c.Param("id")
-	services.Db.First(&evaluation, id)
+	services.Db.First(&location, id)
 
-	if evaluation.ID == 0 {
+	if location.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Evaluation not found!"})
 		return
 	}
 
-	if err := c.ShouldBindJSON(&evaluation); err != nil {
+	if err := c.ShouldBindJSON(&location); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Check request!"})
 		return
 	}
 
-	services.Db.Save(evaluation)
+	services.Db.Save(location)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Update succeeded!"})
 }
 
 func AddEvaluation(c *gin.Context) {
-	var evaluation model.Evaluation
+	var location model.Location
 
-	if err := c.ShouldBindJSON(&evaluation); err != nil {
+	if err := c.ShouldBindJSON(&location); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Check syntax!"})
 		return
 	}
-	services.Db.Save(&evaluation)
-	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Create successful!", "resourceId": evaluation.ID})
+	services.Db.Save(&location)
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Create successful!", "resourceId": location.ID})
 }
 
 func DeleteEvaluation(c *gin.Context) {
-	var evaluation model.Evaluation
+	var location model.Location
 
 	id := c.Param("id")
-	services.Db.First(&evaluation, id)
+	services.Db.First(&location, id)
 
-	if evaluation.ID == 0 {
+	if location.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "None found!"})
 		return
 	}
 
-	services.Db.Delete(&evaluation)
+	services.Db.Delete(&location)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeeded!"})
 }
