@@ -1,8 +1,10 @@
 package routes
 
 import (
-	"projetoapi/controllers"
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/controllers"
 
+	// Other imports
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,7 +26,7 @@ func EchoRepeat(c *gin.Context) {
 // @Security BearerAuth
 // @param Authorization header string true "Token"
 // @Success 200 {array} model.Evaluation
-// @Router /evaluation [get]
+// @Router /checkout [get]
 // @Failure 404 "Not found"
 func GetAllEvaluation(c *gin.Context) {
 	controllers.GetAllEvaluations(c)
@@ -39,9 +41,9 @@ func GetAllEvaluation(c *gin.Context) {
 // @param Authorization header string true "Token"
 // @Param id path int true "Evaluation ID"
 // @Success 200 {object} model.Evaluation
-// @Router /evaluation/{id} [get]
+// @Router /checkout/{id} [get]
 // @Failure 404 "Not found"
-func GetEvaluationById(c *gin.Context) {
+func GetEvaluationByID(c *gin.Context) {
 	controllers.GetEvaluationByID(c)
 }
 
@@ -53,7 +55,7 @@ func GetEvaluationById(c *gin.Context) {
 // @param Authorization header string true "Token"
 // @Param evaluation body model.Evaluation true "Udpdate evaluation"
 // @Param id path int true "Evaluation ID"
-// @Router /evaluation/{id} [put]
+// @Router /checkout/{id} [put]
 // @Success 200 {object} model.Evaluation
 // @Failure 400 "Bad request"
 // @Failure 404 "Not found"
@@ -69,7 +71,7 @@ func UpdateEvaluation(c *gin.Context) {
 // @Security BearerAuth
 // @param Authorization header string true "Token"
 // @Param id path int true "Evaluation ID"
-// @Router /evaluation/{id} [delete]
+// @Router /checkout/{id} [delete]
 // @Success 200 {object} model.Evaluation
 // @Failure 404 "Not found"
 func DeleteEvaluation(c *gin.Context) {
@@ -83,10 +85,23 @@ func DeleteEvaluation(c *gin.Context) {
 // @Security BearerAuth
 // @param Authorization header string true "Token"
 // @Param evaluation body model.Evaluation true "Add evaluation"
-// @Router /evaluation [post]
+// @Router /checkout [post]
 // @Success 201 {object} model.Evaluation
 // @Failure 400 "Bad request"
 // @Failure 404 "Not found"
 func AddEvaluation(c *gin.Context) {
 	controllers.AddEvaluation(c)
+}
+
+// @Summary Recupera todos os usuários
+// @Description Devolve todos os usuários presentes no sistema
+// @Accept  json
+// @Produce  json
+// @Security BearerAuth
+// @param Authorization header string true "Token"
+// @Router /checkout [get]
+// @Success 200 {array} model.Users
+// @Failure 404 "Not found"
+func GetAllUsers(c *gin.Context) {
+	controllers.GetAllUsers(c)
 }
