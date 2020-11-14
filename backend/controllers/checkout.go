@@ -1,9 +1,12 @@
 package controllers
 
 import (
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/model"
+	"github.com/JsBraz/ProjetoAppWeb/backend/services"
+
+	// Other imports
 	"net/http"
-	"projetoapi/model"
-	"projetoapi/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -86,4 +89,8 @@ func DeleteEvaluation(c *gin.Context) {
 
 	services.Db.Delete(&location)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeeded!"})
+}
+
+func GetAllUsers(c *gin.Context) {
+
 }

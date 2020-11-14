@@ -1,10 +1,12 @@
 package main
 
 import (
-	"projetoapi/model"
-	"projetoapi/routes"
-	"projetoapi/services"
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/model"
+	"github.com/JsBraz/ProjetoAppWeb/backend/routes"
+	"github.com/JsBraz/ProjetoAppWeb/backend/services"
 
+	// Other imports
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	swaggerFiles "github.com/swaggo/files"
@@ -48,7 +50,7 @@ func main() {
 		checkout.GET("/", routes.GetAllEvaluation)
 		// Get all users (rotes.GetAllUsers)
 		checkout.GET("/users", routes.GetAllUsers)
-		checkout.GET("/:id", routes.GetEvaluationById)
+		checkout.GET("/:id", routes.GetEvaluationByID)
 		// Update user (rotes.UpdateUser)
 		checkout.PUT("/:id", routes.UpdateEvaluation)
 		// Delete user (rotes.DeleteUser)

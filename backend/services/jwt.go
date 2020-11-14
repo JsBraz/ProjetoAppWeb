@@ -1,9 +1,13 @@
 package services
 
 import (
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/model"
+
+	// Other imports
 	"fmt"
 	"io/ioutil"
-	"projetoapi/model"
+
 	"strings"
 	"time"
 

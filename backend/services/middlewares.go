@@ -1,8 +1,11 @@
 package services
 
 import (
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/model"
+
+	// Other imports
 	"net/http"
-	"projetoapi/model"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"

@@ -1,8 +1,10 @@
 package routes
 
 import (
-	"projetoapi/controllers"
+	// Local imports
+	"github.com/JsBraz/ProjetoAppWeb/backend/controllers"
 
+	// Other imports
 	"github.com/gin-gonic/gin"
 )
 
