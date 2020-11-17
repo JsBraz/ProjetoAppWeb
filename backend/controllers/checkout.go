@@ -19,8 +19,8 @@ func Echo(c *gin.Context) {
 	})
 }
 
-func GetAllEvaluations(c *gin.Context) {
-	var locations []model.location
+func GetAllLocations(c *gin.Context) {
+	var locations [] model.Location
 
 	services.Db.Find(&locations)
 
@@ -29,10 +29,10 @@ func GetAllEvaluations(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": evaluations})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": locations})
 }
 
-func GetEvaluationByID(c *gin.Context) {
+func GetLocationByID(c *gin.Context) {
 	var location model.Location
 	id := c.Param("id")
 
@@ -42,10 +42,10 @@ func GetEvaluationByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": evaluation})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": location})
 }
 
-func UpdateEvaluation(c *gin.Context) {
+func UpdateLocation(c *gin.Context) {
 	var location model.Location
 
 	id := c.Param("id")
@@ -65,7 +65,7 @@ func UpdateEvaluation(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Update succeeded!"})
 }
 
-func AddEvaluation(c *gin.Context) {
+func AddLocation(c *gin.Context) {
 	var location model.Location
 
 	if err := c.ShouldBindJSON(&location); err != nil {
@@ -76,7 +76,7 @@ func AddEvaluation(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Create successful!", "resourceId": location.ID})
 }
 
-func DeleteEvaluation(c *gin.Context) {
+func DeleteLocation(c *gin.Context) {
 	var location model.Location
 
 	id := c.Param("id")
