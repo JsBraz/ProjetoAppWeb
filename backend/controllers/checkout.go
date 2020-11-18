@@ -93,4 +93,14 @@ func DeleteLocation(c *gin.Context) {
 
 func GetAllUsers(c *gin.Context) {
 
+	var users []model.Users
+
+	services.Db.Find(&users)
+
+	if len(users) <= 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "None found!"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "data": users})
 }
