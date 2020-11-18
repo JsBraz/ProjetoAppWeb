@@ -1,20 +1,19 @@
 package services
 
 import (
-	"io/ioutil"
-	"strings"
-
 	"github.com/jinzhu/gorm"
 )
 
+/*
 var username string
 var password string
 var dbHost string
 var dbPort string
-var dbName string
+var dbName string*/
 
 var Db *gorm.DB
 
+/*
 func readProperties() {
 	content, _ := ioutil.ReadFile("config/db.config")
 
@@ -27,14 +26,13 @@ func readProperties() {
 		dbPort = lines[4]
 		dbName = lines[5]
 	}
-
-}
+}*/
 
 func OpenDatabase() {
 	//open a db connection
-	readProperties()
+	//readProperties()
 	var err error
-	Db, err = gorm.Open("postgres", "postgres://"+username+":"+password+"@"+dbHost+":"+dbPort+"/"+dbName+"?sslmode=disable")
+	Db, err = gorm.Open("postgres", "postgres://"+"test"+":"+"passw0rd"+"@"+"database"+":"+"5432"+"/"+"apidb"+"?sslmode=disable")
 	if err != nil {
 		panic("failed to connect database")
 	}

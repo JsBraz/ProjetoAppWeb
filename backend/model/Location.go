@@ -5,7 +5,8 @@ import "github.com/jinzhu/gorm"
 // swagger:model
 type Location struct {
 	gorm.Model `swaggerignore:"true"`
-	Latitutde     int    `json:"Latitude"`
-	Longitude     int    `json:"Longitude"`
-	Name       string `json:"Name"`
+	Latitude   float32 `json:"latitude"`
+	Longitude  float32 `json:"longitude"`
+	Name       string  `json:"name"`
+	People     int     `json:"people"`
 }

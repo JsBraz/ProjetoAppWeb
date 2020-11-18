@@ -8,31 +8,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Echo the data sent on get
-// @Description Echo the data sent though the get request.
-// @Accept  json
-// @Produce  json
-// @Success 200 {array} model.Evaluation
-// @Router /echo [get]
-// @Failure 404 "Not found"
-func EchoRepeat(c *gin.Context) {
-	controllers.Echo(c)
-}
-
-// @Summary Recupera as avaliações
-// @Description Exibe a lista, sem todos os campos, de todas as avaliações
+// @Summary Recupera as localizações
+// @Description Exibe a lista, sem todos os campos, de todas as localizações
 // @Accept  json
 // @Produce  json
 // @Security BearerAuth
 // @param Authorization header string true "Token"
-// @Success 200 {array} model.Evaluation
+// @Success 200 {array} model.Location
 // @Router /checkout [get]
 // @Failure 404 "Not found"
-func GetAllEvaluation(c *gin.Context) {
-	controllers.GetAllEvaluations(c)
+func GetAllLocations(c *gin.Context) {
+	controllers.GetAllLocations(c)
 }
 
-// @Summary Recupera uma avaliação pelo id
+// @Summary Recupera uma localização pelo id
 // @Description Exibe os detalhes de uma avaliação pelo ID
 // @ID get-evaluation-by-int
 // @Accept  json
@@ -40,11 +29,11 @@ func GetAllEvaluation(c *gin.Context) {
 // @Security BearerAuth
 // @param Authorization header string true "Token"
 // @Param id path int true "Evaluation ID"
-// @Success 200 {object} model.Evaluation
+// @Success 200 {object} model.Location
 // @Router /checkout/{id} [get]
 // @Failure 404 "Not found"
-func GetEvaluationByID(c *gin.Context) {
-	controllers.GetEvaluationByID(c)
+func GetLocationByID(c *gin.Context) {
+	controllers.GetLocationByID(c)
 }
 
 // @Summary Atualiza uma avaliação
@@ -53,14 +42,14 @@ func GetEvaluationByID(c *gin.Context) {
 // @Produce  json
 // @Security BearerAuth
 // @param Authorization header string true "Token"
-// @Param evaluation body model.Evaluation true "Udpdate evaluation"
+// @Param evaluation body model.Location true "Udpdate evaluation"
 // @Param id path int true "Evaluation ID"
 // @Router /checkout/{id} [put]
-// @Success 200 {object} model.Evaluation
+// @Success 200 {object} model.Location
 // @Failure 400 "Bad request"
 // @Failure 404 "Not found"
-func UpdateEvaluation(c *gin.Context) {
-	controllers.UpdateEvaluation(c)
+func UpdateLocation(c *gin.Context) {
+	controllers.UpdateLocation(c)
 }
 
 // @Summary Exclui uma avaliação pelo ID
@@ -72,25 +61,25 @@ func UpdateEvaluation(c *gin.Context) {
 // @param Authorization header string true "Token"
 // @Param id path int true "Evaluation ID"
 // @Router /checkout/{id} [delete]
-// @Success 200 {object} model.Evaluation
+// @Success 200 {object} model.Location
 // @Failure 404 "Not found"
-func DeleteEvaluation(c *gin.Context) {
-	controllers.DeleteEvaluation(c)
+func DeleteLocation(c *gin.Context) {
+	controllers.DeleteLocation(c)
 }
 
-// @Summary Adicionar uma avaliação
-// @Description Cria uma avaliação sobre a utilização da aplicação
+// @Summary Adicionar uma localização
+// @Description Cria uma localização sobre a utilização da aplicação
 // @Accept  json
 // @Produce  json
 // @Security BearerAuth
 // @param Authorization header string true "Token"
-// @Param evaluation body model.Evaluation true "Add evaluation"
+// @Param location body model.Location true "Add evaluation"
 // @Router /checkout [post]
-// @Success 201 {object} model.Evaluation
+// @Success 201 {object} model.Location
 // @Failure 400 "Bad request"
 // @Failure 404 "Not found"
-func AddEvaluation(c *gin.Context) {
-	controllers.AddEvaluation(c)
+func AddLocation(c *gin.Context) {
+	controllers.AddLocation(c)
 }
 
 // @Summary Recupera todos os usuários

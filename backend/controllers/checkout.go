@@ -20,7 +20,7 @@ func Echo(c *gin.Context) {
 }
 
 func GetAllLocations(c *gin.Context) {
-	var locations [] model.Location
+	var locations []model.Location
 
 	services.Db.Find(&locations)
 
@@ -38,7 +38,7 @@ func GetLocationByID(c *gin.Context) {
 
 	services.Db.First(&location, id)
 	if location.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Evaluation not found!"})
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Location not found!"})
 		return
 	}
 
@@ -52,7 +52,7 @@ func UpdateLocation(c *gin.Context) {
 	services.Db.First(&location, id)
 
 	if location.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Evaluation not found!"})
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Location not found!"})
 		return
 	}
 

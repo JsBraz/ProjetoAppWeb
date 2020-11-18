@@ -17,7 +17,7 @@ var identityKey = "id"
 
 func init() {
 	services.OpenDatabase()
-	services.Db.AutoMigrate(&model.Evaluation{})
+	services.Db.AutoMigrate(&model.Location{})
 	services.Db.AutoMigrate(&model.Users{})
 
 	defer services.Db.Close()
@@ -34,27 +34,27 @@ func main() {
 	router.Use(gin.Recovery())
 
 	// NO AUTH
-	router.GET("/echo/:echo", routes.EchoRepeat)
+	//router.GET("/echo/:echo", routes.EchoRepeat)
 
 	// AUTH
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	checkout := router.Group("/api/v1/checkout")
+	checkout := router.Group("/api/v1")
 	checkout.Use(services.AuthorizationRequired())
 	{
 		// Add location (routes.AddLocation)
-		checkout.POST("/", routes.AddEvaluation)
+		checkout.POST("/addLocation", routes.AddLocation)
 		// Will be routes.GetAllLocations (devolve localizações e pessoas através de web sockets)
-		checkout.GET("/", routes.GetAllEvaluation)
+		checkout.GET("/getLocations", routes.GetAllLocations)
 		// Get all users (rotes.GetAllUsers)
-		checkout.GET("/users", routes.GetAllUsers)
-		checkout.GET("/:id", routes.GetEvaluationByID)
+		checkout.GET("/getUsers", routes.GetAllUsers)
+		checkout.GET("/getLocationById/:id", routes.GetLocationByID)
 		// Update user (rotes.UpdateUser)
-		checkout.PUT("/:id", routes.UpdateEvaluation)
+		checkout.PUT("/updateLocation/:id", routes.UpdateLocation)
 		// Delete user (rotes.DeleteUser)
-		checkout.DELETE("/:id", routes.DeleteEvaluation)
+		checkout.DELETE("/deleteLocation/:id", routes.DeleteLocation)
 	}
 
 	auth := router.Group("/api/v1/auth")
@@ -64,7 +64,6 @@ func main() {
 		auth.POST("/register", routes.RegisterUser)
 		auth.PUT("/refresh_token", services.AuthorizationRequired(), routes.RefreshToken)
 	}
-
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run(":8080")
 }
