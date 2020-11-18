@@ -44,8 +44,12 @@ func RegisterHandler(c *gin.Context) {
 		return
 	}
 	services.OpenDatabase()
-	services.Db.Save(&creds)
-	
+	value := services.Db.Save(&creds)
+	if value.RowsAffected == 0 {
+		c.JSON(http.StatusConflict, gin.H{"status": http.StatusConflict, "message": "Username already taken!"})
+		defer services.Db.Close()
+		return
+	}
 
 	defer services.Db.Close()
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "User ID": creds.ID})
