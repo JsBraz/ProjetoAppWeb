@@ -12,6 +12,4 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  name = 'Valter'
-
 }
