@@ -11,7 +11,6 @@ export class AppComponent {
   currentUser: any;
 
   constructor(
-    private router: Router,
   ) {
   }
 }
