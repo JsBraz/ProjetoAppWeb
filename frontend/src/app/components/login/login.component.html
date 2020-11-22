@@ -1,0 +1,49 @@
+<app-nav></app-nav>
+<div class="container">
+  <form [formGroup]="validationForm"
+        (ngSubmit)="onSubmit()">
+
+    <p class="h4 mb-4">Login</p>
+    <div class="md-form">
+
+      <!-- Email -->
+      <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
+      <input mdbInput mdbValidate formControlName="username" minLength="8" maxLength="30" type="email"
+             class="form-control" id="formUsername">
+      <label for="formUsername">Type your e-mail</label>
+      <mdb-error *ngIf="username.invalid && (username.dirty || username.touched)">Input invalid</mdb-error>
+      <mdb-success *ngIf="username.valid && (username.dirty || username.touched)">Input valid</mdb-success>
+    </div>
+
+    <!-- Password -->
+    <div class="md-form">
+      <mdb-icon fas icon="lock" class="prefix"></mdb-icon>
+      <input mdbInput mdbValidate formControlName="password" minLength="10" maxLength="25" type="password"
+             class="form-control" id="formPassword">
+      <label for="formPassword">Type your password</label>
+      <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)">Input invalid
+      </mdb-error>
+      <mdb-success *ngIf="password.valid && (password.dirty || password.touched)">Input valid
+      </mdb-success>
+    </div>
+
+    <div class="d-flex justify-content-around">
+      <div>
+        <!-- Remember me -->
+        <mdb-checkbox [default]="true">Lembrar sessão</mdb-checkbox>
+      </div>
+      <div>
+        <!-- Forgot password -->
+        <a href="">Esqueci password</a>
+      </div>
+    </div>
+
+    <!-- Sign in button -->
+    <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
+
+    <!-- Register -->
+    <p>Ainda sem conta?
+      <a [routerLink] = "['/register']">Regista-te</a>
+    </p>
+  </form>
+</div>
