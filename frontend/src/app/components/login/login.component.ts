@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  check_name = '';
+  check_pass = '';
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public fb: FormBuilder) {
     this.validationForm = fb.group({
