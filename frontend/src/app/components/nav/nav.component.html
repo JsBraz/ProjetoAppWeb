@@ -5,13 +5,12 @@
       <a class="nav-link" [routerLink] = "['/home']">Home </a>
     </li>
     <li class="nav-item" *ngIf="showAdminBoard">
-      <a class="nav-link" routerLink="admin">Admin Board</a>
+      <a class="nav-link" [routerLink] = "['/admin']">Admin Board</a>
     </li>
-    <li class="nav-item" *ngIf="showModeratorBoard">
-      <a class="nav-link" routerLink="mod">Moderator Board</a>
+    <li class="nav-item" *ngIf="showUserBoard">
+      <a class="nav-link" [routerLink] = "['/user']">User</a>
     </li>
     <li class="nav-item">
-      <a *ngIf="isLoggedIn" routerLink="user">User</a>
     </li>
   </ul>
 
