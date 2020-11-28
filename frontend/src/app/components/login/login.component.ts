@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  roles: string[] = [];
+  roles: string;
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public fb: FormBuilder) {
     this.validationForm = fb.group({
@@ -38,12 +38,12 @@ export class LoginComponent implements OnInit {
     console.log(this.validationForm);
     this.authService.login(this.validationForm.value).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
+        this.roles = this.tokenStorage.getUser().role;
         this.reloadPage();
       },
       err => {

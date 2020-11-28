@@ -14,6 +14,8 @@ import {NavComponent} from './components/nav/nav.component';
 import {HomeComponent} from './components/home/home.component';
 import {authInterceptorProviders} from './helpers/auth.interceptor';
 import {AgmCoreModule} from '@agm/core';
+import { MapComponent } from './components/map/map.component';
+import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import {AgmCoreModule} from '@agm/core';
     RegisterComponent,
     NavComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    MapComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,

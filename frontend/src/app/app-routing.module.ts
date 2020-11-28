@@ -4,13 +4,18 @@ import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegisterComponent} from './components/register/register.component';
 import {ProfileComponent} from './components/profile/profile.component';
+import {MapComponent} from './components/map/map.component';
+import {LocationComponent} from './components/location/location.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'map', component: MapComponent },
+  { path: 'location/:id', component: LocationComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // { path: '**', component: ErrorComponent }
 ];
 
 @NgModule({
