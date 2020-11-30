@@ -13,6 +13,9 @@ import {RegisterComponent} from './components/register/register.component';
 import {NavComponent} from './components/nav/nav.component';
 import {HomeComponent} from './components/home/home.component';
 import {authInterceptorProviders} from './helpers/auth.interceptor';
+import {AgmCoreModule} from '@agm/core';
+import { MapComponent } from './components/map/map.component';
+import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   declarations: [
@@ -21,16 +24,21 @@ import {authInterceptorProviders} from './helpers/auth.interceptor';
     RegisterComponent,
     NavComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    MapComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,
     MDBBootstrapModule.forRoot(),
-    RouterModule.forRoot([]),
+    RouterModule.forRoot([], { useHash: true }),
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBNWbLqQhQq5zmtUd9Z7owepfLn0OckinE'
+    })
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
