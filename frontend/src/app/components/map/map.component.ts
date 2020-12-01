@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy } from '@angular/core';
 import {LocationService} from '../../services/location.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 interface Locations {
   ID: number;
@@ -29,20 +29,8 @@ export class MapComponent implements OnInit {
   ]; */
   private errorMessage: any;
 
-  constructor(private locationService: LocationService) {
+  constructor(private router: Router, private locationService: LocationService) {
   }
-
-  /*
-  agm-map - > (mapClick)="placeMarker($event)"
-  placeMarker(position: any) {
-    const nm = position.name;
-    const lat = position.coords.lat;
-    const lng = position.coords.lng;
-    const cntr = position.counter;
-
-    this.markers.push({name: nm, latitude: lat, longitude: lng, counter: cntr});
-  }*/
-
 
   ngOnInit(): void {
       this.locationService.getLocation().subscribe(data => {
@@ -55,4 +43,7 @@ export class MapComponent implements OnInit {
   }
 
 
+  goToLocation(locationID) {
+    this.router.navigate(['/location/' + locationID]);
+  }
 }
