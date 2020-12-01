@@ -51,6 +51,7 @@ export class LocationComponent implements OnInit {
   }
 
   counterPlus(){
+    this.counter = this.counter + 1;
     console.log(this.counter + 1);
   }
 

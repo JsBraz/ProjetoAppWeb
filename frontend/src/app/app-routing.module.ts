@@ -6,6 +6,7 @@ import {RegisterComponent} from './components/register/register.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {MapComponent} from './components/map/map.component';
 import {LocationComponent} from './components/location/location.component';
+import {BackofficeComponent} from './components/backoffice/backoffice.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'map', component: MapComponent },
   { path: 'location/:id', component: LocationComponent },
+  { path: 'backoffice', component: BackofficeComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
