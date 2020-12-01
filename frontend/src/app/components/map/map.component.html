@@ -9,9 +9,9 @@
       </ul>
     </div>
     <div class="col-sm">
-      <agm-map [latitude]="latitude" [longitude]="longitude" style="height: 500px" >
+      <agm-map [zoom]="10" [latitude]="latitude" [longitude]="longitude" style="height: 500px">
         <agm-marker (mouseOver)="window.open()" (mouseOut)="window.close()" *ngFor="let marker of markers" [latitude]="marker.latitude"
-                    [longitude]="marker.longitude">
+                    [longitude]="marker.longitude" (markerClick)="goToLocation(marker.ID)">
           <agm-info-window #window>
             <h6>Nome: {{marker.name}}</h6>
             <h6>Ocupação: {{marker.people}}</h6>

@@ -14,8 +14,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'map', component: MapComponent },
   { path: 'location/:id', component: LocationComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  // { path: '**', component: ErrorComponent }
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({

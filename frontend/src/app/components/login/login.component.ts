@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {TokenStorageService} from '../../services/token-storage.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string;
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, public fb: FormBuilder) {
+  constructor(private router: Router, private authService: AuthService, private tokenStorage: TokenStorageService, public fb: FormBuilder) {
     this.validationForm = fb.group({
       username: [null, [Validators.required, Validators.email]],
       password: [null, Validators.required],
@@ -44,7 +45,10 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().role;
-        this.reloadPage();
+        this.router.navigate(['/map']).then(r =>
+          this.reloadPage()
+        );
+        // this.reloadPage();
       },
       err => {
         this.errorMessage = err.error.message;
