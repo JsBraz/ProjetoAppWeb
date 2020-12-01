@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4200 --host 0.0.0.0",
+    "start": "ng serve --proxy-config proxy.config.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^3.0.0-beta.0",
     "@angular/animations": "~9.1.12",
     "@angular/cdk": "^11.0.0",
     "@angular/common": "~9.1.12",
@@ -22,6 +23,7 @@
     "@angular/router": "~9.1.12",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@types/chart.js": "^2.9.28",
+    "@types/googlemaps": "^3.39.13",
     "angular-bootstrap-md": "^10.0.0",
     "animate.css": "^4.1.1",
     "chart.js": "^2.5.0",
