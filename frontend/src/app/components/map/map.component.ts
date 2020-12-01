@@ -33,7 +33,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.locationService.getLocation().subscribe(data => {
+      this.locationService.getLocations().subscribe(data => {
           this.markers = data.data;
         },
         err => {
