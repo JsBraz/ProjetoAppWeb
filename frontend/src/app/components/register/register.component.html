@@ -2,13 +2,13 @@
   <form [formGroup]="validationForm"
         (ngSubmit)="onSubmit()">
 
-    <p class="h4 mb-4">Registar</p>
+    <p class="h4 mb-4">Sign Up</p>
     <div class="md-form">
 
       <!-- Email -->
       <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
       <input mdbInput mdbValidate formControlName="username" minLength="8" maxLength="30" type="email"
-             class="form-control" id="formUsername">
+             class="form-control" id="formUsername" [(ngModel)]="check_name">
       <label for="formUsername">Type your e-mail</label>
       <mdb-error *ngIf="username.invalid && (username.dirty || username.touched)">Input invalid</mdb-error>
       <mdb-success *ngIf="username.valid && (username.dirty || username.touched)">Input valid</mdb-success>
@@ -18,7 +18,7 @@
     <div class="md-form">
       <mdb-icon fas icon="lock" class="prefix"></mdb-icon>
       <input mdbInput mdbValidate formControlName="password" minLength="10" maxLength="25" type="password"
-             class="form-control" id="formPassword">
+             class="form-control" id="formPassword" [(ngModel)]="check_pass">
       <label for="formPassword">Type your password</label>
       <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)">Input invalid
       </mdb-error>
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Sign in button -->
-    <button mdbBtn color="info" block="true" class="my-4" type="submit">Sign in</button>
+    <button mdbBtn color="info" block="true" class="my-4" type="submit" [disabled]="check_pass === '' || check_name === '' || username.invalid || password.invalid">Sign up</button>
 
     <!-- Register -->
     <p>Já tens conta?

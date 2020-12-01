@@ -1,4 +1,6 @@
 .container {
-  padding-top: 20px;
+  padding: 20px 40px;
   width: 700px;
+  box-shadow: 0px 0px 30px 1px rgba(0, 0, 0, 0.2);
+  background-color: rgb(229, 234, 236);
 }

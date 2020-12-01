@@ -27,6 +27,21 @@ services:
     volumes:
       - ./backend:/go/src/projetoapi
 
+  frontend:
+    container_name: angular_service
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    volumes:
+      - './frontend:/usr/src/app'
+      - './frontend:/usr/src/app/node_modules'
+    ports:
+      - '4200:4200'
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+
+
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
 
