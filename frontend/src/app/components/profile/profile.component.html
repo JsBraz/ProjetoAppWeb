@@ -3,20 +3,21 @@
     <h3>
       <strong>Profile</strong>
     </h3>
+    <p>
+      <strong>Token:</strong>
+      {{ currentUser.token.substring(0, 20) }} ...
+      {{ currentUser.token.substr(currentUser.token.length - 20) }}
+    </p>
+    <p>
+      <strong>Username:</strong>
+      {{ currentUser.Username }}
+    </p>
+    <p>
+      <strong>Roles:</strong>
+      {{currentUser.Role}}
+    </p>
   </header>
-  <p>
-    <strong>Token:</strong>
-    {{ currentUser.token.substring(0, 20) }} ...
-    {{ currentUser.token.substr(currentUser.token.length - 20) }}
-  </p>
-  <p>
-    <strong>Username:</strong>
-    {{ currentUser.Username }}
-  </p>
-  <strong>Roles:</strong>
-  {{currentUser.Role}}
 </div>
-
-<ng-template #loggedOut>
+  <ng-template #loggedOut>
   Please login.
 </ng-template>
