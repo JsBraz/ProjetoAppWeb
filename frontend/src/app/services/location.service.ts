@@ -21,7 +21,7 @@ export class LocationService {
       password: credentials.password
     }, httpOptions);
   }
-  getLocation(): Observable<any> {
+  getLocations(): Observable<any> {
     return this.http.get(AUTH_API + 'getLocations', httpOptions);
   }
 

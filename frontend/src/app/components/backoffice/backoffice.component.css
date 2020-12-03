@@ -1,0 +1,10 @@
+.row{
+  padding: 10px
+}
+.background-color{
+  color: white;
+}
+.test:after {
+  content: '\2807';
+  font-size: 20px;
+}
