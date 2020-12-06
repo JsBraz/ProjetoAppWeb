@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {LocationService} from '../../services/location.service';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '../../services/token-storage.service';
+import {LocationModel} from '../../models/location.model';
+import {PusherService} from '../../services/pusher.service';
+import {Subscription} from 'rxjs';
 
 interface Locations {
   ID: number;
@@ -17,6 +20,8 @@ interface Locations {
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+  public locationModels: LocationModel[] = [];
+  private locationSubscription: Subscription;
 
   markers: Locations[];
 
@@ -25,7 +30,18 @@ export class MapComponent implements OnInit {
 
   private errorMessage: any;
 
-  constructor(private router: Router, private locationService: LocationService, private tokenStorage: TokenStorageService) {
+  constructor(private router: Router, private locationService: LocationService, private pusherService: PusherService,
+              private tokenStorage: TokenStorageService) {
+    this.locationSubscription = pusherService
+      .getFeedItems()
+      .subscribe((location: LocationModel) => {
+        console.log('Update ' + location.id);
+        this.markers.forEach( (currentValue, index) => {
+          if (currentValue.ID == location.id){
+            currentValue.people = location.people;
+          }
+        });
+      });
   }
 
   ngOnInit(): void {
