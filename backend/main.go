@@ -52,7 +52,7 @@ func main() {
 		checkout.GET("/getUsers", routes.GetAllUsers)
 		checkout.GET("/getLocationById/:id", routes.GetLocationByID)
 		// Update user (rotes.UpdateUser)
-		checkout.PUT("/updateLocation/:id", routes.UpdateLocation)
+		checkout.PUT("/updateLocation", routes.UpdateLocation)
 		// Delete user (rotes.DeleteUser)
 		checkout.DELETE("/deleteLocation/:id", routes.DeleteLocation)
 	}

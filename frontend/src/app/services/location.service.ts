@@ -15,17 +15,19 @@ export class LocationService {
 
   constructor(private http: HttpClient) { }
 
-  login(credentials): Observable<any> {
-    return this.http.post(AUTH_API + 'login', {
-      username: credentials.username,
-      password: credentials.password
-    }, httpOptions);
-  }
-  getLocations(): Observable<any> {
+  getLocation(): Observable<any> {
     return this.http.get(AUTH_API + 'getLocations', httpOptions);
   }
 
   getLocationById(id): Observable<any> {
     return this.http.get(AUTH_API + 'getLocationById/' + id, httpOptions);
+  }
+
+  updateCouter(data): Observable<any> {
+    console.log(data[0].counter);
+    return this.http.put(AUTH_API + 'updateLocation', {
+      id: data[0].id,
+      people: data[0].people
+    }, httpOptions);
   }
 }
