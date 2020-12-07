@@ -9,7 +9,6 @@ import { BackofficeComponent } from './components/backoffice/backoffice.componen
 import { LocationComponent } from './components/location/location.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

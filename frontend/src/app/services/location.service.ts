@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 
 const AUTH_API = 'http://localhost:4200/api/api/v1/';
 
-
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
