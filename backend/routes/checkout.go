@@ -94,3 +94,7 @@ func AddLocation(c *gin.Context) {
 func GetAllUsers(c *gin.Context) {
 	controllers.GetAllUsers(c)
 }
+
+func DeleteUser(c *gin.Context) {
+	controllers.DeleteUser(c)
+}

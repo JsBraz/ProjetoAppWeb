@@ -54,7 +54,9 @@ func main() {
 		// Update user (rotes.UpdateUser)
 		checkout.PUT("/updateLocation", routes.UpdateLocation)
 		// Delete user (rotes.DeleteUser)
-		checkout.DELETE("/deleteLocation/:id", routes.DeleteLocation)
+		checkout.GET("/deleteLocation/:id", routes.DeleteLocation)
+
+		checkout.GET("/deleteUser/:id", routes.DeleteUser)
 	}
 
 	auth := router.Group("/api/v1/auth")

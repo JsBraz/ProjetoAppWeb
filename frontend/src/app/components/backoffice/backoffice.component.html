@@ -29,19 +29,10 @@
         <td>{{user.username}}</td>
         <td>{{user.role}}</td>
         <td>
-          <div class="btn-group" mdbDropdown>
-            <button mdbDropdownToggle type="button" mdbBtn color="primary" class="dropdown-toggle waves-light"
-                    mdbWavesEffect>
-              Gerir Utilizador
-            </button>
-            <div class="dropdown-menu dropdown-primary">
-              <a class="dropdown-item" href="#">Editar</a>
-              <a class="dropdown-item" href="#">Adicionar Localização</a>
-              <a class="dropdown-item" href="#">Remover Localização</a>
-              <div class="divider dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Eliminar Utilizador</a>
-            </div>
-          </div>
+          <a mdbBtn floating="true" size="sm" gradient="blue" mdbWavesEffect>
+            <mdb-icon fas icon="star" ng-click (click)="onClickDeleteUser(user.ID)"></mdb-icon>
+          </a>
+
         </td>
       </tr>
       </tbody>
@@ -62,19 +53,9 @@
         <td>{{location.longitude}}</td>
         <td>{{location.name}}</td>
         <td>
-          <div class="btn-group" mdbDropdown>
-            <button mdbDropdownToggle type="button" mdbBtn color="primary" class="dropdown-toggle waves-light"
-                    mdbWavesEffect>
-              Gerir Localização
-            </button>
-            <div class="dropdown-menu dropdown-primary">
-              <a class="dropdown-item" href="#">Editar</a>
-              <a class="dropdown-item" href="#">Adicionar Localização</a>
-              <a class="dropdown-item" href="#">Remover Localização</a>
-              <div class="divider dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Eliminar Utilizador</a>
-            </div>
-          </div>
+          <a mdbBtn floating="true" size="sm" gradient="blue" mdbWavesEffect>
+            <mdb-icon fas icon="star" ng-click (click)="onClickDeleteLocation(location.ID)"></mdb-icon>
+          </a>
         </td>
       </tr>
       </tbody>
