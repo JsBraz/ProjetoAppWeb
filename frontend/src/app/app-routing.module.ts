@@ -4,6 +4,9 @@ import {HomeComponent} from './components/home/home.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegisterComponent} from './components/register/register.component';
 import {ProfileComponent} from './components/profile/profile.component';
+import { MapComponent } from './components/map/map.component';
+import { BackofficeComponent } from './components/backoffice/backoffice.component';
+import { LocationComponent } from './components/location/location.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -11,6 +14,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'map', component: MapComponent },
+  { path: 'location/:id', component: LocationComponent },
+  { path: 'backoffice', component: BackofficeComponent },
+  
+  { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

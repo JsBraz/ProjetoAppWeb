@@ -1,0 +1,33 @@
+<div class="container">
+  <mdb-card>
+    <mdb-card-body>
+      <mdb-card-title>
+        <div class="row align-items-center justify-content-between">
+          <div class="col-sm">
+            <h4>{{name}}</h4>
+          </div>
+          <div class="col-sm">
+            <h6>Ocupação -> {{counter}} pessoas.</h6>
+          </div>
+          <div *ngIf="isAdmin" class="col-auto">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-primary px-3" (click)="counterPlus()"><i class="fas fa-plus" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn-primary px-3" (click)="counterMinus()"><i class="fas fa-minus" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </mdb-card-title>
+      <mdb-card-text>
+        <agm-map [zoom]="17" [mapTypeId]="'hybrid'" [mapDraggable]=false [latitude]="latitude" [longitude]="longitude" style="height: 500px" >
+          <agm-marker (mouseOver)="window.open()" (mouseOut)="window.close()" [latitude]="latitude"
+                      [longitude]="longitude" >
+            <agm-info-window #window>
+              <h6>Nome: {{name}}</h6>
+              <h6>Ocupação: {{counter}}</h6>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+      </mdb-card-text>
+    </mdb-card-body>
+  </mdb-card>
+</div>

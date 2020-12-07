@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {TokenStorageService} from '../../services/token-storage.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -26,13 +26,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  get username() { return this.validationForm.get('username'); }
-  get password() { return this.validationForm.get('password'); }
+  get username() {
+    return this.validationForm.get('username');
+  }
+
+  get password() {
+    return this.validationForm.get('password');
+  }
 
   ngOnInit(): void {
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getUser().roles;
+      this.router.navigate(['/map']).then(r =>
+        this.reloadPage()
+      );
     }
   }
 
@@ -45,8 +53,10 @@ export class LoginComponent implements OnInit {
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        this.roles = this.tokenStorage.getUser().role;
+        this.router.navigate(['/map']).then(r =>
+          this.reloadPage()
+        );
       },
       err => {
         this.errorMessage = err.error.message;
