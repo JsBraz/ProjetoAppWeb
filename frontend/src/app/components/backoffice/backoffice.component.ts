@@ -28,7 +28,7 @@ export class BackofficeComponent implements OnInit {
   userElements: User[];
   userHeadElements = ['ID', 'Nome', 'Role', ''];
   locationElements: Location[];
-  locationHeadElements = ['ID', 'Nome', 'Latitude', 'Longitude', ''];
+  locationHeadElements = ['ID', 'Latitude', 'Longitude', 'Nome', ''];
   private errorMessage: any;
   hiddenElement: boolean;
   hiddenElement2: boolean;
@@ -46,9 +46,9 @@ export class BackofficeComponent implements OnInit {
       isAdmin: [null],
     });
     this.locationValidationForm = fb.group({
-      longitude: [null, [Validators.required, Validators.max]],
+      name: [null, Validators.required],
       latitude: [null, Validators.required],
-      name:  [null, Validators.required]
+      longitude: [null, [Validators.required]]
     });
   }
 
@@ -100,16 +100,21 @@ export class BackofficeComponent implements OnInit {
   }
 
   onUserSubmit() {
-    if (this.checkBox === true) {
+    if (this.userValidationForm.value.isAdmin === true) {
       this.userValidationForm.value.isAdmin = 'admin';
     } else {
       this.userValidationForm.value.isAdmin = 'user';
     }
-    console.log(this.userValidationForm);
-    this.userService.addUser(this.userValidationForm.value).subscribe();
+    this.userService.addUser(this.userValidationForm.value).subscribe(data => {
+      console.log(data);
+      this.userElements.push(data.user);
+    });
   }
 
   onLocationSubmit() {
-
+    this.locationService.addLocation(this.locationValidationForm.value).subscribe(data => {
+      console.log(data);
+      this.locationElements.push(data.location);
+    });
   }
 }

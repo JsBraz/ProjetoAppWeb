@@ -35,4 +35,12 @@ export class LocationService {
   deleteLocation(id: number): Observable<any> {
     return this.http.get(AUTH_API + 'deleteLocation/' + id, httpOptions);
   }
+
+  addLocation(location): Observable<any> {
+    return this.http.post(AUTH_API + 'addLocation', {
+      name: location.name,
+      latitude: parseFloat(location.latitude),
+      longitude: parseFloat(location.longitude),
+    }, httpOptions);
+  }
 }

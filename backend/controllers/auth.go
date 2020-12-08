@@ -38,7 +38,6 @@ func LoginHandler(c *gin.Context) {
 
 func RegisterHandler(c *gin.Context) {
 	var creds model.Users
-	creds.Role = "user"
 	if err := c.ShouldBindJSON(&creds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Bad request!"})
 		return
@@ -52,7 +51,7 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	defer services.Db.Close()
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "User ID": creds.ID})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "ID": creds.ID, "user": creds})
 }
 
 func RefreshHandler(c *gin.Context) {

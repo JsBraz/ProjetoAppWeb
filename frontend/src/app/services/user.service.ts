@@ -36,7 +36,7 @@ export class UserService {
     return this.http.post(API_URL + 'auth/register', {
       username: user.username,
       password: user.password,
-      isAdmin: user.isAdmin,
+      role: user.isAdmin,
     }, httpOptions);
   }
 
