@@ -16,7 +16,6 @@ const routes: Routes = [
   { path: 'map', component: MapComponent },
   { path: 'location/:id', component: LocationComponent },
   { path: 'backoffice', component: BackofficeComponent },
-  
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];
 
