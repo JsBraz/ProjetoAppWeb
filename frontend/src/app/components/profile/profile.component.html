@@ -3,6 +3,18 @@
     <h3>
       <strong>Profile</strong>
     </h3>
+    <p>
+      <strong>Token:</strong>
+      {{ currentUser.token}}
+    </p>
+    <p>
+      <strong>Username:</strong>
+      {{ currentUser.Username }}
+    </p>
+    <p>
+      <strong>Roles:</strong>
+      {{currentUser.Role}}
+    </p>
   </header>
   <p>
     <strong>Token:</strong>
@@ -16,7 +28,6 @@
   <strong>Roles:</strong>
   {{currentUser.Role}}
 </div>
-
-<ng-template #loggedOut>
+  <ng-template #loggedOut>
   Please login.
 </ng-template>

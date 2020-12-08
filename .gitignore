@@ -9,6 +9,7 @@
 
 # dependencies
 /frontend/node_modules
+/socket-server/node_modules
 
 # profiling files
 /frontend/chrome-profiler-events*.json
