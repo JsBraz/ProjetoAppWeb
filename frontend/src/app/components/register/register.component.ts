@@ -14,8 +14,8 @@ export class RegisterComponent implements OnInit {
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
-  check_name = '';
-  check_pass = '';
+  checkName = '';
+  checkPass = '';
 
   constructor(private authService: AuthService, public fb: FormBuilder) {
     this.validationForm = fb.group({

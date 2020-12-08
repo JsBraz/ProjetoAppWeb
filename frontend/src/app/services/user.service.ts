@@ -26,9 +26,9 @@ export class UserService {
   getAdminBoard(): Observable<any> {
     return this.http.get(API_URL + 'admin', { responseType: 'text' });
   }
-  deleteUser(id:number): Observable<any>{
-    console.log("aqui tb passou crlhh")
-    return this.http.get(API_URL +'deleteUser/' + id, httpOptions);
+  deleteUser(id: number): Observable<any>{
+    console.log('aqui tb passou crlhh');
+    return this.http.get(API_URL + 'deleteUser/' + id, httpOptions);
   }
 
 }

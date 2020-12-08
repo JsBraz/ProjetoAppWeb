@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
-import {LocationService} from "../../services/location.service";
-import {UserService} from '../../services/user.service';
-import {LocationService} from "../../services/location.service";
+import {LocationService} from '../../services/location.service';
 
 interface User {
   ID: number;
@@ -23,21 +21,6 @@ interface Location {
   templateUrl: './backoffice.component.html',
   styleUrls: ['./backoffice.component.css']
 })
-
-
-export class BackofficeComponent implements OnInit {
-
-  userElements: User[];
-  userHeadElements = ['ID', 'Nome', 'Role', ''];
-  locationElements: Location[];
-  locationHeadElements = ['ID', 'Nome', 'Latitude', 'Longitude', ''];
-  private errorMessage: any;
-  hiddenElement: boolean;
-  hiddenElement2: boolean;
-
-  constructor(private userService: UserService, private locationService: LocationService) {
-    this.hiddenElement = false;
-    this.hiddenElement2 = true;
 
 export class BackofficeComponent implements OnInit {
 
@@ -65,7 +48,6 @@ export class BackofficeComponent implements OnInit {
     );
     this.locationService.getLocation().subscribe(data => {
       this.locationElements = data.data;
-       this.elements = data.data;
       },
       err => {
         this.errorMessage = err.error.message;
@@ -83,28 +65,26 @@ export class BackofficeComponent implements OnInit {
     this.hiddenElement2 = false;
   }
 
-  onClickDeleteUser(id:number){
-    console.log("passou crlh")
+  onClickDeleteUser(id: number){
+    console.log('passou crlh');
     this.userService.deleteUser(id).subscribe(data => {
-      this.userElements.forEach((user,index) =>{
-        if(user.ID===id){
-          this.userElements.splice(index,1)
-          
+      this.userElements.forEach((user, index) => {
+        if (user.ID === id){
+          this.userElements.splice(index, 1);
         }
-      })
+      });
     });
   }
 
 
-  onClickDeleteLocation(id:number){
-    console.log("passou crlh")
+  onClickDeleteLocation(id: number){
+    console.log('passou crlh');
     this.locationService.deleteLocation(id).subscribe(data => {
-      this.locationElements.forEach((location,index) =>{
-        if(location.ID===id){
-          this.locationElements.splice(index,1)
-          
+      this.locationElements.forEach((location, index) => {
+        if (location.ID === id){
+          this.locationElements.splice(index, 1);
         }
-      })
+      });
     });
   }
 }
