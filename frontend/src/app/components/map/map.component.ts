@@ -1,6 +1,10 @@
-import {Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LocationService} from '../../services/location.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
+import {TokenStorageService} from '../../services/token-storage.service';
+import {LocationModel} from '../../models/location.model';
+import {PusherService} from '../../services/pusher.service';
+import {Subscription} from 'rxjs';
 
 interface Locations {
   ID: number;
@@ -16,34 +20,59 @@ interface Locations {
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+  public locationModels: LocationModel[] = [];
+  private locationSubscription: Subscription;
 
   markers: Locations[];
 
   longitude = -8.628649023896578;
   latitude = 41.16136223175756;
 
-  /* markers = [
-    {id: 1, name: 'Marshopping', latitude: 41.20914936478033, longitude: -8.687319273437796, counter: 34},
-    {id: 2, name: 'Norte Shopping', latitude: 41.18098595200483, longitude: -8.654608488782772, counter: 54},
-    {id: 3, name: 'Gaia Shopping', latitude: 41.11850644409132, longitude: -8.622378517620648, counter: 12},
-  ]; */
   private errorMessage: any;
 
-  constructor(private router: Router, private locationService: LocationService) {
+  constructor(private router: Router, private locationService: LocationService, private pusherService: PusherService,
+              private tokenStorage: TokenStorageService) {
+    this.locationSubscription = pusherService
+      .getFeedItems()
+      .subscribe((location: LocationModel) => {
+        console.log('Update ' + location.id);
+        this.markers.forEach( (currentValue, index) => {
+          if (currentValue.ID == location.id){
+            currentValue.people = location.people;
+          }
+        });
+      });
   }
 
   ngOnInit(): void {
+    if (!this.tokenStorage.getToken()) {
+      this.router.navigate(['/login']).then(r =>
+        this.reloadPage()
+      );
+    } else {
       this.locationService.getLocation().subscribe(data => {
           this.markers = data.data;
         },
         err => {
+          if (err.error.status === 401){
+            this.tokenStorage.signOut();
+            this.router.navigate(['/login']).then(r =>
+              this.reloadPage()
+            );
+          }
           this.errorMessage = err.error.message;
         }
       );
+    }
   }
 
 
   goToLocation(locationID) {
     this.router.navigate(['/location/' + locationID]);
+  }
+
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }

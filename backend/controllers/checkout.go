@@ -48,20 +48,20 @@ func GetLocationByID(c *gin.Context) {
 func UpdateLocation(c *gin.Context) {
 	var location model.Location
 
-	id := c.Param("id")
-	services.Db.First(&location, id)
+	if err := c.ShouldBindJSON(&location); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Check syntax!"})
+		return
+	}
+
+	counter := location.People
+	services.Db.First(&location, location.ID)
 
 	if location.ID == 0 {
 		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "Location not found!"})
 		return
 	}
 
-	if err := c.ShouldBindJSON(&location); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Check request!"})
-		return
-	}
-
-	services.Db.Save(location)
+	services.Db.Model(&location).Update("people", counter)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Update succeeded!"})
 }
 
@@ -88,6 +88,21 @@ func DeleteLocation(c *gin.Context) {
 	}
 
 	services.Db.Delete(&location)
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeeded!"})
+}
+
+func DeleteUser(c *gin.Context) {
+	var user model.Users
+
+	id := c.Param("id")
+	services.Db.First(&user, id)
+
+	if user.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"status": http.StatusNotFound, "message": "None found!"})
+		return
+	}
+
+	services.Db.Delete(&user)
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Delete succeeded!"})
 }
 
