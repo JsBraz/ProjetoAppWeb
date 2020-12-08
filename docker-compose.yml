@@ -27,20 +27,34 @@ services:
     volumes:
       - ./backend:/go/src/projetoapi
 
- #frontend:
- #  container_name: angular_service
- #  build:
- #    context: ./frontend/
- #    dockerfile: Dockerfile
- #  volumes:
- #    - './frontend:/usr/src/app'
- #    - './frontend:/usr/src/app/node_modules'
- #  ports:
- #    - '4200:4200'
- #  environment:
- #    - NODE_ENV=development
- #    - CHOKIDAR_USEPOLLING=true
+  sockets:
+    restart: always
+    build: 
+      context: ./socket-server/
+      dockerfile: Dockerfile
+    volumes:
+      - './socket-server:/node_modules'
+    ports:
+      - "3000:3000"
 
+  # frontend:
+  # container_name: angular_service
+  # build:
+  #   context: ./frontend/
+  #   dockerfile: Dockerfile
+  # volumes:
+  #   - './frontend:/usr/src/app/node_modules'
+  # ports:
+  #   - '4200:4200'
+  # environment:
+  #   - NODE_ENV=development
+  #   - CHOKIDAR_USEPOLLING=true
+  # depends_on: 
+  #   - gin_app 
+  # command: >
+  #   bash -c "npm install && ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.config.js"
+  
+ 
 
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
