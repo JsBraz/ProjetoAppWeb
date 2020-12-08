@@ -127,10 +127,12 @@ export class BackofficeComponent implements OnInit {
   }
 
   onLocationSubmit() {
-    this.locationService.addLocation(this.locationValidationForm.value).subscribe(data => {
-      console.log(data);
-      this.locationElements.push(data.location);
-    });
+    if (this.checkIfTokenIsValid() === true) {
+      this.locationService.addLocation(this.locationValidationForm.value).subscribe(data => {
+        console.log(data);
+        this.locationElements.push(data.location);
+      });
+    }
   }
 
   checkIfTokenIsValid() {
