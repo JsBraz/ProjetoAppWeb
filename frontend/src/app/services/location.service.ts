@@ -30,8 +30,6 @@ export class LocationService {
       people: data[0].people
     }, httpOptions);
   }
-
-
   deleteLocation(id:number): Observable<any>{
     console.log("aqui tb passou crlhh")
     return this.http.get(AUTH_API +'deleteLocation/' + id, httpOptions);

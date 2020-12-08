@@ -1,21 +1,15 @@
-<<<<<<< HEAD
 import {Component, OnInit, ViewChild} from '@angular/core';
+import {UserService} from '../../services/user.service';
+import {LocationService} from "../../services/location.service";
 import {UserService} from '../../services/user.service';
 import {LocationService} from "../../services/location.service";
 
 interface User {
-=======
-import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../services/user.service';
-
-interface Users {
->>>>>>> dcf64852ddb34c1cd5c093c3ff1d709e9146a81f
   ID: number;
   username: string;
   role: string;
 }
 
-<<<<<<< HEAD
 interface Location {
   ID: number;
   latitude: number;
@@ -24,14 +18,11 @@ interface Location {
   people: number;
 }
 
-=======
->>>>>>> dcf64852ddb34c1cd5c093c3ff1d709e9146a81f
 @Component({
   selector: 'app-backoffice',
   templateUrl: './backoffice.component.html',
   styleUrls: ['./backoffice.component.css']
 })
-<<<<<<< HEAD
 
 
 export class BackofficeComponent implements OnInit {
@@ -47,19 +38,25 @@ export class BackofficeComponent implements OnInit {
   constructor(private userService: UserService, private locationService: LocationService) {
     this.hiddenElement = false;
     this.hiddenElement2 = true;
-=======
-export class BackofficeComponent implements OnInit {
-  elements: Users[];
-  headElements = ['ID', 'Nome', 'Role',''];
-  private errorMessage: any;
 
-  constructor(private userService: UserService) {
->>>>>>> dcf64852ddb34c1cd5c093c3ff1d709e9146a81f
+export class BackofficeComponent implements OnInit {
+
+  userElements: User[];
+  userHeadElements = ['ID', 'Nome', 'Role', ''];
+  locationElements: Location[];
+  locationHeadElements = ['ID', 'Nome', 'Latitude', 'Longitude', ''];
+  private errorMessage: any;
+  hiddenElement: boolean;
+  hiddenElement2: boolean;
+
+  constructor(private userService: UserService, private locationService: LocationService) {
+    this.hiddenElement = false;
+    this.hiddenElement2 = true;
+
   }
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe(data => {
-<<<<<<< HEAD
         this.userElements = data.data;
       },
       err => {
@@ -67,10 +64,8 @@ export class BackofficeComponent implements OnInit {
       }
     );
     this.locationService.getLocation().subscribe(data => {
-        this.locationElements = data.data;
-=======
-        this.elements = data.data;
->>>>>>> dcf64852ddb34c1cd5c093c3ff1d709e9146a81f
+      this.locationElements = data.data;
+       this.elements = data.data;
       },
       err => {
         this.errorMessage = err.error.message;
@@ -87,7 +82,6 @@ export class BackofficeComponent implements OnInit {
     this.hiddenElement = true;
     this.hiddenElement2 = false;
   }
-
 
   onClickDeleteUser(id:number){
     console.log("passou crlh")
