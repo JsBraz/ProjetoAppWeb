@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
-import {LocationService} from "../../services/location.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {LocationService} from '../../services/location.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {TokenStorageService} from '../../services/token-storage.service';
+import {Router} from '@angular/router';
 
 interface User {
   ID: number;
@@ -36,7 +38,8 @@ export class BackofficeComponent implements OnInit {
   userValidationForm: FormGroup;
   locationValidationForm: FormGroup;
 
-  constructor(private userService: UserService, private locationService: LocationService, public fb: FormBuilder) {
+  constructor(private userService: UserService, private locationService: LocationService, public fb: FormBuilder,
+              private tokenStorage: TokenStorageService, private router: Router) {
     this.hiddenElement = false;
     this.hiddenElement2 = true;
     this.checkBox = false;
@@ -53,20 +56,26 @@ export class BackofficeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(data => {
-        this.userElements = data.data;
-      },
-      err => {
-        this.errorMessage = err.error.message;
-      }
-    );
-    this.locationService.getLocation().subscribe(data => {
-        this.locationElements = data.data;
-      },
-      err => {
-        this.errorMessage = err.error.message;
-      }
-    );
+    if (this.checkIfTokenIsValid() === true) {
+      this.userService.getUsers().subscribe(data => {
+          this.userElements = data.data;
+        },
+        err => {
+          this.errorMessage = err.error.message;
+        }
+      );
+      this.locationService.getLocation().subscribe(data => {
+          this.locationElements = data.data;
+        },
+        err => {
+          this.errorMessage = err.error.message;
+        }
+      );
+    }
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 
   onClickUsersHandler() {
@@ -80,6 +89,7 @@ export class BackofficeComponent implements OnInit {
   }
 
   onClickDeleteUser(id: number) {
+    if (this.checkIfTokenIsValid() === true) {
     this.userService.deleteUser(id).subscribe(data => {
       this.userElements.forEach((user, index) => {
         if (user.ID === id) {
@@ -87,28 +97,33 @@ export class BackofficeComponent implements OnInit {
         }
       });
     });
+    }
   }
 
   onClickDeleteLocation(id: number) {
-    this.locationService.deleteLocation(id).subscribe(data => {
-      this.locationElements.forEach((location, index) => {
-        if (location.ID === id) {
-          this.locationElements.splice(index, 1);
-        }
+    if (this.checkIfTokenIsValid() === true) {
+      this.locationService.deleteLocation(id).subscribe(data => {
+        this.locationElements.forEach((location, index) => {
+          if (location.ID === id) {
+            this.locationElements.splice(index, 1);
+          }
+        });
       });
-    });
+    }
   }
 
   onUserSubmit() {
-    if (this.userValidationForm.value.isAdmin === true) {
-      this.userValidationForm.value.isAdmin = 'admin';
-    } else {
-      this.userValidationForm.value.isAdmin = 'user';
+    if (this.checkIfTokenIsValid() === true) {
+      if (this.userValidationForm.value.isAdmin === true) {
+        this.userValidationForm.value.isAdmin = 'admin';
+      } else {
+        this.userValidationForm.value.isAdmin = 'user';
+      }
+      this.userService.addUser(this.userValidationForm.value).subscribe(data => {
+        console.log(data);
+        this.userElements.push(data.user);
+      });
     }
-    this.userService.addUser(this.userValidationForm.value).subscribe(data => {
-      console.log(data);
-      this.userElements.push(data.user);
-    });
   }
 
   onLocationSubmit() {
@@ -116,5 +131,14 @@ export class BackofficeComponent implements OnInit {
       console.log(data);
       this.locationElements.push(data.location);
     });
+  }
+
+  checkIfTokenIsValid() {
+    if (!this.tokenStorage.getToken()) {
+      this.router.navigate(['/login']).then(r =>
+        this.reloadPage()
+      );
+    }
+    return true;
   }
 }

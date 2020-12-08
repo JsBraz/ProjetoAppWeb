@@ -38,6 +38,9 @@ func LoginHandler(c *gin.Context) {
 
 func RegisterHandler(c *gin.Context) {
 	var creds model.Users
+	if creds.Role == "" {
+		creds.Role = "user"
+	}
 	if err := c.ShouldBindJSON(&creds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Bad request!"})
 		return
