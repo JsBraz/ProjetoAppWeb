@@ -11,21 +11,30 @@
         <a> Locations</a>
       </li>
     </ul>
-    <form [formGroup]="userValidationForm"
-          (ngSubmit)="onUserSubmit()">
+    <form [formGroup]="userValidationForm" (ngSubmit)="onUserSubmit()">
       <div [hidden]="hiddenElement" style="margin-top: 50px">
         <h5 solid="true"> Novo Utilizador:</h5>
         <div class="md-form">
-          <input formControlName="username" type="text" id="form104" class="form-control" mdbInput>
+          <input mdbInput mdbValidate  formControlName="username" minLength="2" maxLength="30" type="email"
+                 id="form104" class="form-control">
           <label for="form104">Username</label>
+          <mdb-error *ngIf="username.invalid && (username.dirty || username.touched)">Input invalid</mdb-error>
+          <mdb-success *ngIf="username.valid && (username.dirty || username.touched)">Input valid</mdb-success>
         </div>
         <div class="md-form">
-          <input formControlName="password" type="password" id="form105" class="form-control" mdbInput>
+
+          <input mdbInput mdbValidate  formControlName="username" minLength="5" maxLength="30" type="password"
+                 id="form105" class="form-control">
           <label for="form105">Password</label>
+          <mdb-error *ngIf="password.invalid && (password.dirty || password.touched)">Input invalid</mdb-error>
+          <mdb-success *ngIf="password.valid && (password.dirty || password.touched)">Input valid</mdb-success>
         </div>
         <mdb-checkbox formControlName="isAdmin" [default]="true" [checked]="checkBox">Is Admin?</mdb-checkbox>
       </div>
-      <button [hidden]="hiddenElement" mdbBtn type="submit" color="indigo" rounded="true"
+      <button [hidden]="hiddenElement" *ngIf="disabled" mdbBtn type="submit" disabled color="indigo" rounded="true"
+              mdbWavesEffect style="margin-top: 50px">Adicionar Utilizador
+      </button>
+      <button [hidden]="hiddenElement" *ngIf="!disabled" mdbBtn type="submit" color="indigo" rounded="true"
               mdbWavesEffect style="margin-top: 50px">Adicionar Utilizador
       </button>
     </form>

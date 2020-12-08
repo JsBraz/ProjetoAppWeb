@@ -37,6 +37,7 @@ export class BackofficeComponent implements OnInit {
   checkBox: boolean;
   userValidationForm: FormGroup;
   locationValidationForm: FormGroup;
+  disabled: false;
 
   constructor(private userService: UserService, private locationService: LocationService, public fb: FormBuilder,
               private tokenStorage: TokenStorageService, private router: Router) {
@@ -44,8 +45,9 @@ export class BackofficeComponent implements OnInit {
     this.hiddenElement2 = true;
     this.checkBox = false;
     this.userValidationForm = fb.group({
-      username: [null, [Validators.required, Validators.email]],
-      password: [null, Validators.required],
+      username: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(5)]],
+      confirmPassword: ['', Validators.required],
       isAdmin: [null],
     });
     this.locationValidationForm = fb.group({
@@ -62,6 +64,11 @@ export class BackofficeComponent implements OnInit {
         },
         err => {
           this.errorMessage = err.error.message;
+          if (err.error.status === 401){
+            this.router.navigate(['/login']).then(() =>
+              this.reloadPage()
+            );
+          }
         }
       );
       this.locationService.getLocation().subscribe(data => {
@@ -69,9 +76,23 @@ export class BackofficeComponent implements OnInit {
         },
         err => {
           this.errorMessage = err.error.message;
+          if (err.error.status === 401){
+            this.router.navigate(['/login']).then(() =>
+              this.reloadPage()
+            );
+          }
         }
       );
+    } else {
     }
+  }
+
+  get username() {
+    return this.userValidationForm.get('username');
+  }
+
+  get password() {
+    return this.userValidationForm.get('password');
   }
 
   reloadPage(): void {
@@ -96,7 +117,15 @@ export class BackofficeComponent implements OnInit {
           this.userElements.splice(index, 1);
         }
       });
-    });
+    },
+      err => {
+        /*if (err.error.status === 404) {
+          this.tokenStorage.signOut();
+          this.router.navigate(['/login']).then(() =>
+            this.reloadPage()
+          );
+        }*/
+      });
     }
   }
 
@@ -113,12 +142,15 @@ export class BackofficeComponent implements OnInit {
   }
 
   onUserSubmit() {
+
+
     if (this.checkIfTokenIsValid() === true) {
       if (this.userValidationForm.value.isAdmin === true) {
         this.userValidationForm.value.isAdmin = 'admin';
       } else {
         this.userValidationForm.value.isAdmin = 'user';
       }
+
       this.userService.addUser(this.userValidationForm.value).subscribe(data => {
         console.log(data);
         this.userElements.push(data.user);
