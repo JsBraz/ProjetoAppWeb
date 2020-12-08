@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TokenStorageService} from '../../services/token-storage.service';
 import {HttpClient} from '@angular/common/http';
@@ -6,6 +6,7 @@ import {LocationService} from '../../services/location.service';
 import {LocationModel} from '../../models/location.model';
 import {Subscription} from 'rxjs';
 import {PusherService} from '../../services/pusher.service';
+import {UsersLocationsModel} from '../../models/usersLocations.model';
 
 interface Locations {
   ID: number;
@@ -20,9 +21,10 @@ interface Locations {
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
-export class LocationComponent implements OnInit {
+export class LocationComponent implements OnInit, OnDestroy {
   public locationModels: LocationModel[] = [];
   private locationSubscription: Subscription;
+  private userLocationSubscription: Subscription;
 
   private isSending: boolean;
   private httpClient: HttpClient;
@@ -31,6 +33,7 @@ export class LocationComponent implements OnInit {
   public infoMsg: string;
   public title: string;
 
+  users: string[] = [];
 
   isAdmin: boolean;
   markers: Locations[];
@@ -43,13 +46,25 @@ export class LocationComponent implements OnInit {
 
   constructor(private router: Router, private locationService: LocationService, private pusherService: PusherService,
               private http: HttpClient,
-              private activatedroute: ActivatedRoute, private tokenStorage: TokenStorageService) {
+              private activatedroute: ActivatedRoute, public tokenStorage: TokenStorageService) {
     this.httpClient = http;
     this.locationSubscription = pusherService
       .getFeedItems()
       .subscribe((location: LocationModel) => {
-        if (location.id.toString() === this.id) {
-          this.counter = location.people;
+          if (location.id.toString() === this.id) {
+            this.counter = location.people;
+          }
+        }
+      );
+    this.userLocationSubscription = pusherService
+      .getUserLocationsItems()
+      .subscribe((userLocation: UsersLocationsModel[]) => {
+        console.log('UserLocation from socket: ', userLocation);
+        this.users = [];
+        for (const user of userLocation){
+          if (user.location === this.name){
+            this.users.push(user.userName);
+          }
         }
       });
 
@@ -79,6 +94,7 @@ export class LocationComponent implements OnInit {
             this.counter = data.data.people;
             this.latitude = data.data.latitude;
             this.longitude = data.data.longitude;
+            this.addToUserList();
           },
           err => {
             if (err.error.status === 401) {
@@ -92,6 +108,33 @@ export class LocationComponent implements OnInit {
         );
       });
     }
+  }
+
+  ngOnDestroy(){
+    this.addToUserList('');
+  }
+
+  addToUserList(locationOpt?) {
+    if (locationOpt === undefined) {
+      locationOpt = this.name;
+    }
+    this.http
+      .post('http://localhost:3000/updateUsers', {
+        location: locationOpt,
+        userName: this.tokenStorage.getUser().Username
+      })
+      .toPromise()
+      .then((data: { message: string; status: boolean }) => {
+        this.infoMsg = data.message;
+
+        this.isSending = false;
+      })
+      .catch(error => {
+        this.infoMsg = '';
+        this.errorMsg = error.error.message;
+
+        this.isSending = false;
+      });
   }
 
   submitCounter(newValue) {
@@ -131,9 +174,9 @@ export class LocationComponent implements OnInit {
     this.submitCounter(this.counter - 1);
   }
 
-  updateCount(){
+  updateCount() {
     const data: LocationModel[] = [
-      { id: Number.parseInt(this.id, 10), people: this.counter},
+      {id: Number.parseInt(this.id, 10), people: this.counter},
     ];
 
     this.locationService.updateCouter(data).subscribe(data => {

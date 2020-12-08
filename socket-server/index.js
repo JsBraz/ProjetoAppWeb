@@ -24,8 +24,10 @@ app.get('/', function (req, res) {
 
 // An in memory structure to prevent posts with duplicate titles
 const locations = [];
+let usersLocation = [];
 
 app.post('/submit', (req, res) => {
+    console.log("--> Submit");
     const id = req.body.id;
     const counter = req.body.counter;
 
@@ -43,27 +45,50 @@ app.post('/submit', (req, res) => {
         return;
     }
 
-    const index = locations.findIndex(element => {
-        return element === id;
-    });
-
-    if (index >= 0) {
-        location = locations.find(element => {
-            return element === id;
-        });
-        pusher.trigger('realtime-feeds', 'posts', {
-            id: id,
-            counter: counter,
-        });
-        res
-            .status(200)
-            .send({message: 'Post was successfully created', status: true});
-        return;
-    }
-
     pusher.trigger('realtime-feeds', 'posts', {
         id: id,
         counter: counter,
+    });
+    res
+        .status(200)
+        .send({message: 'Post was successfully created', status: true});
+});
+
+app.post('/updateUsers', (req, res) => {
+    console.log("--> UpdateUsers");
+    const location = req.body.location;
+    const userName = req.body.userName;
+
+    if (location === undefined) {
+        res
+            .status(400)
+            .send({message: 'Please provide location', status: false});
+        return;
+    }
+
+    if (userName === undefined) {
+        res
+            .status(400)
+            .send({message: 'Please provide userName', status: false});
+        return;
+    }
+    let user = usersLocation.find(user => user.userName === userName);
+    if (user === undefined){
+        user = {
+            "location": location,
+            "userName": userName
+        }
+        usersLocation.push(user);
+
+    } else if (user.userName === userName && user.location !== this.location){
+        userIndex = usersLocation.findIndex(user => user.userName === userName)
+        usersLocation[userIndex].location = location;
+    }
+
+    console.log(location, "<- Location - username ->", userName, " array: ", usersLocation);
+
+    pusher.trigger('realtime-feeds', 'usersLocations', {
+        userLocation: usersLocation
     });
     res
         .status(200)

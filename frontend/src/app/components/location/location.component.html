@@ -6,21 +6,44 @@
           <div class="col-sm">
             <h4>{{name}}</h4>
           </div>
-          <div class="col-sm">
-            <h6>Ocupação -> {{counter}} pessoas.</h6>
-          </div>
-          <div *ngIf="isAdmin" class="col-auto">
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <button type="button" class="btn btn-primary px-3" (click)="counterPlus()"><i class="fas fa-plus" aria-hidden="true"></i></button>
-              <button type="button" class="btn btn-primary px-3" (click)="counterMinus()"><i class="fas fa-minus" aria-hidden="true"></i></button>
-            </div>
-          </div>
         </div>
       </mdb-card-title>
       <mdb-card-text>
-        <agm-map [zoom]="17" [mapTypeId]="'hybrid'" [mapDraggable]=false [latitude]="latitude" [longitude]="longitude" style="height: 500px" >
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-4">
+              <h5>Utilizadores nesta localização:</h5>
+              <ul class="list-group-flush" *ngFor="let user of users">
+                <li *ngIf="user===this.tokenStorage.getUser().Username; else isNotMe" class="list-group-item active">
+                  {{user}}
+                </li>
+                <ng-template #isNotMe>
+                  <li class="list-group-item">
+                    {{user}}
+                  </li>
+                </ng-template>
+
+              </ul>
+            </div>
+            <div class="col-sm">
+              <h5>Ocupação -> {{counter}} pessoas.</h5>
+            </div>
+            <div *ngIf="isAdmin" class="col-auto">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary px-3" (click)="counterPlus()"><i class="fas fa-plus"
+                                                                                              aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-primary px-3" (click)="counterMinus()"><i class="fas fa-minus"
+                                                                                               aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <agm-map [zoom]="17" [mapTypeId]="'hybrid'" [mapDraggable]=false [latitude]="latitude" [longitude]="longitude"
+                 style="height: 500px">
           <agm-marker (mouseOver)="window.open()" (mouseOut)="window.close()" [latitude]="latitude"
-                      [longitude]="longitude" >
+                      [longitude]="longitude">
             <agm-info-window #window>
               <h6>Nome: {{name}}</h6>
               <h6>Ocupação: {{counter}}</h6>
