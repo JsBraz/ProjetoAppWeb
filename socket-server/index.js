@@ -49,6 +49,7 @@ app.post('/submit', (req, res) => {
         id: id,
         counter: counter,
     });
+
     res
         .status(200)
         .send({message: 'Post was successfully created', status: true});

@@ -13,7 +13,7 @@
           <div class="row">
             <div class="col-sm-4">
               <h5>Utilizadores nesta localização:</h5>
-              <ul class="list-group-flush" *ngFor="let user of users">
+              <ul *ngFor="let user of users" class="list-group-flush">
                 <li *ngIf="user===this.tokenStorage.getUser().Username; else isNotMe" class="list-group-item active">
                   {{user}}
                 </li>
@@ -28,21 +28,21 @@
             <div class="col-sm">
               <h5>Ocupação -> {{counter}} pessoas.</h5>
             </div>
-            <div *ngIf="isAdmin" class="col-auto">
-              <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-primary px-3" (click)="counterPlus()"><i class="fas fa-plus"
-                                                                                              aria-hidden="true"></i>
+            <div class="col-auto">
+              <div aria-label="Basic example" class="btn-group" role="group">
+                <button (click)="counterPlus()" class="btn btn-primary px-3" type="button"><i aria-hidden="true"
+                                                                                              class="fas fa-plus"></i>
                 </button>
-                <button type="button" class="btn btn-primary px-3" (click)="counterMinus()"><i class="fas fa-minus"
-                                                                                               aria-hidden="true"></i>
+                <button (click)="counterMinus()" class="btn btn-primary px-3" type="button"><i aria-hidden="true"
+                                                                                               class="fas fa-minus"></i>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <agm-map [zoom]="17" [mapTypeId]="'hybrid'" [mapDraggable]=false [latitude]="latitude" [longitude]="longitude"
+        <agm-map [latitude]="latitude" [longitude]="longitude" [mapDraggable]=false [mapTypeId]="'hybrid'" [zoom]="17"
                  style="height: 500px">
-          <agm-marker (mouseOver)="window.open()" (mouseOut)="window.close()" [latitude]="latitude"
+          <agm-marker (mouseOut)="window.close()" (mouseOver)="window.open()" [latitude]="latitude"
                       [longitude]="longitude">
             <agm-info-window #window>
               <h6>Nome: {{name}}</h6>

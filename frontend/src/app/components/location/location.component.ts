@@ -23,26 +23,24 @@ interface Locations {
 })
 export class LocationComponent implements OnInit, OnDestroy {
   public locationModels: LocationModel[] = [];
-  private locationSubscription: Subscription;
-  private userLocationSubscription: Subscription;
-
-  private isSending: boolean;
-  private httpClient: HttpClient;
   public content: string;
   public errorMsg: string;
   public infoMsg: string;
   public title: string;
-
   users: string[] = [];
-
   isAdmin: boolean;
   markers: Locations[];
-  private id: string;
+  id: string;
   name: string;
   counter: number;
-  private errorMessage: any;
+  errorMessage: any;
   longitude;
   latitude;
+  sub;
+  private locationSubscription: Subscription;
+  private userLocationSubscription: Subscription;
+  private httpClient: HttpClient;
+  private isSending: boolean;
 
   constructor(private router: Router, private locationService: LocationService, private pusherService: PusherService,
               private http: HttpClient,
@@ -61,8 +59,8 @@ export class LocationComponent implements OnInit, OnDestroy {
       .subscribe((userLocation: UsersLocationsModel[]) => {
         console.log('UserLocation from socket: ', userLocation);
         this.users = [];
-        for (const user of userLocation){
-          if (user.location === this.name){
+        for (const user of userLocation) {
+          if (user.location === this.name) {
             this.users.push(user.userName);
           }
         }
@@ -76,11 +74,9 @@ export class LocationComponent implements OnInit, OnDestroy {
     }
   }
 
-  sub;
-
   ngOnInit() {
     if (!this.tokenStorage.getToken()) {
-      this.router.navigate(['/login']).then(r =>
+      this.router.navigate(['/login']).then(() =>
         this.reloadPage()
       );
     } else {
@@ -99,7 +95,7 @@ export class LocationComponent implements OnInit, OnDestroy {
           err => {
             if (err.error.status === 401) {
               this.tokenStorage.signOut();
-              this.router.navigate(['/login']).then(r =>
+              this.router.navigate(['/login']).then(() =>
                 this.reloadPage()
               );
             }
@@ -110,7 +106,7 @@ export class LocationComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.addToUserList('');
   }
 
