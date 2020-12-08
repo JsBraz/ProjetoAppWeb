@@ -1,20 +1,57 @@
 <div class="row">
   <div class="col-md-3">
     <ul class="list-group">
-      <a>
-        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            (click)="onClickUsersHandler()">
-          Users
-        </li>
-      </a>
-      <a>
-        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-            (click)="onClickLocationsHandler()">
-          Locations
-        </li>
-      </a>
+      <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          (click)="onClickUsersHandler()">
+        <a> Users</a>
+      </li>
+
+      <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          (click)="onClickLocationsHandler()">
+        <a> Locations</a>
+      </li>
     </ul>
+    <form [formGroup]="userValidationForm"
+          (ngSubmit)="onUserSubmit()">
+      <div [hidden]="hiddenElement" style="margin-top: 50px">
+        <h5 solid="true"> Novo Utilizador:</h5>
+        <div class="md-form">
+          <input formControlName="username" type="text" id="form104" class="form-control" mdbInput>
+          <label for="form104">Username</label>
+        </div>
+        <div class="md-form">
+          <input formControlName="password" type="password" id="form105" class="form-control" mdbInput>
+          <label for="form105">Password</label>
+        </div>
+        <mdb-checkbox formControlName="isAdmin" [default]="true" [checked]="checkBox">Is Admin?</mdb-checkbox>
+      </div>
+      <button [hidden]="hiddenElement" mdbBtn type="submit" color="indigo" rounded="true"
+              mdbWavesEffect style="margin-top: 50px">Adicionar Utilizador
+      </button>
+    </form>
+    <form [formGroup]="locationValidationForm"
+          (ngSubmit)="onLocationSubmit()">
+      <div [hidden]="hiddenElement2" style="margin-top: 50px">
+        <h5 solid="true"> Nova Localização:</h5>
+        <div class="md-form">
+          <input formControlName="longitude" type="text" id="form106" class="form-control" mdbInput>
+          <label for="form106">Longitude</label>
+        </div>
+        <div class="md-form">
+          <input formControlName="latitude" type="text" id="form107" class="form-control" mdbInput>
+          <label for="form107">Latitude</label>
+        </div>
+        <div class="md-form">
+          <input formControlName="name" type="text" id="form108" class="form-control" mdbInput>
+          <label for="form108">Name</label>
+        </div>
+      </div>
+      <button [hidden]="hiddenElement2" mdbBtn type="submit" color="indigo" rounded="true"
+              mdbWavesEffect style="margin-top: 50px">Adicionar Localização
+      </button>
+    </form>
   </div>
+
 
   <div class="col-sm" [hidden]="hiddenElement">
     <table mdbTable>
@@ -29,10 +66,9 @@
         <td>{{user.username}}</td>
         <td>{{user.role}}</td>
         <td>
-          <a mdbBtn floating="true" size="sm" gradient="blue" mdbWavesEffect>
-            <mdb-icon fas icon="star" ng-click (click)="onClickDeleteUser(user.ID)"></mdb-icon>
+          <a mdbBtn floating="true" size="sm" color="red" rounded="rounded" mdbWavesEffect>
+            <mdb-icon fas icon="trash" (click)="onClickDeleteUser(user.ID)"></mdb-icon>
           </a>
-
         </td>
       </tr>
       </tbody>
@@ -53,13 +89,12 @@
         <td>{{location.longitude}}</td>
         <td>{{location.name}}</td>
         <td>
-          <a mdbBtn floating="true" size="sm" gradient="blue" mdbWavesEffect>
-            <mdb-icon fas icon="star" ng-click (click)="onClickDeleteLocation(location.ID)"></mdb-icon>
+          <a mdbBtn floating="true" size="sm" color="red" mdbWavesEffect>
+            <mdb-icon fas icon="trash" (click)="onClickDeleteLocation(location.ID)"></mdb-icon>
           </a>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-
 </div>

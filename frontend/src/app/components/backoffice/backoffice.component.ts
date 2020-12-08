@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {LocationService} from "../../services/location.service";
-import {UserService} from '../../services/user.service';
-import {LocationService} from "../../services/location.service";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 interface User {
   ID: number;
@@ -24,7 +23,6 @@ interface Location {
   styleUrls: ['./backoffice.component.css']
 })
 
-
 export class BackofficeComponent implements OnInit {
 
   userElements: User[];
@@ -34,25 +32,24 @@ export class BackofficeComponent implements OnInit {
   private errorMessage: any;
   hiddenElement: boolean;
   hiddenElement2: boolean;
+  checkBox: boolean;
+  userValidationForm: FormGroup;
+  locationValidationForm: FormGroup;
 
-  constructor(private userService: UserService, private locationService: LocationService) {
+  constructor(private userService: UserService, private locationService: LocationService, public fb: FormBuilder) {
     this.hiddenElement = false;
     this.hiddenElement2 = true;
-
-export class BackofficeComponent implements OnInit {
-
-  userElements: User[];
-  userHeadElements = ['ID', 'Nome', 'Role', ''];
-  locationElements: Location[];
-  locationHeadElements = ['ID', 'Nome', 'Latitude', 'Longitude', ''];
-  private errorMessage: any;
-  hiddenElement: boolean;
-  hiddenElement2: boolean;
-
-  constructor(private userService: UserService, private locationService: LocationService) {
-    this.hiddenElement = false;
-    this.hiddenElement2 = true;
-
+    this.checkBox = false;
+    this.userValidationForm = fb.group({
+      username: [null, [Validators.required, Validators.email]],
+      password: [null, Validators.required],
+      isAdmin: [null],
+    });
+    this.locationValidationForm = fb.group({
+      longitude: [null, [Validators.required, Validators.max]],
+      latitude: [null, Validators.required],
+      name:  [null, Validators.required]
+    });
   }
 
   ngOnInit(): void {
@@ -64,8 +61,7 @@ export class BackofficeComponent implements OnInit {
       }
     );
     this.locationService.getLocation().subscribe(data => {
-      this.locationElements = data.data;
-       this.elements = data.data;
+        this.locationElements = data.data;
       },
       err => {
         this.errorMessage = err.error.message;
@@ -83,28 +79,37 @@ export class BackofficeComponent implements OnInit {
     this.hiddenElement2 = false;
   }
 
-  onClickDeleteUser(id:number){
-    console.log("passou crlh")
+  onClickDeleteUser(id: number) {
     this.userService.deleteUser(id).subscribe(data => {
-      this.userElements.forEach((user,index) =>{
-        if(user.ID===id){
-          this.userElements.splice(index,1)
-          
+      this.userElements.forEach((user, index) => {
+        if (user.ID === id) {
+          this.userElements.splice(index, 1);
         }
-      })
+      });
     });
   }
 
-
-  onClickDeleteLocation(id:number){
-    console.log("passou crlh")
+  onClickDeleteLocation(id: number) {
     this.locationService.deleteLocation(id).subscribe(data => {
-      this.locationElements.forEach((location,index) =>{
-        if(location.ID===id){
-          this.locationElements.splice(index,1)
-          
+      this.locationElements.forEach((location, index) => {
+        if (location.ID === id) {
+          this.locationElements.splice(index, 1);
         }
-      })
+      });
     });
+  }
+
+  onUserSubmit() {
+    if (this.checkBox === true) {
+      this.userValidationForm.value.isAdmin = 'admin';
+    } else {
+      this.userValidationForm.value.isAdmin = 'user';
+    }
+    console.log(this.userValidationForm);
+    this.userService.addUser(this.userValidationForm.value).subscribe();
+  }
+
+  onLocationSubmit() {
+
   }
 }
