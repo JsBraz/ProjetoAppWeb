@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {LocationService} from '../../services/location.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TokenStorageService} from '../../services/token-storage.service';
 import {Router} from '@angular/router';
+import {MapsAPILoader} from '@agm/core';
 
 interface User {
   ID: number;
@@ -27,6 +28,15 @@ interface Location {
 
 export class BackofficeComponent implements OnInit {
 
+
+  longitude = -8.628649023896578;
+  latitude = 41.16136223175756;
+  address: string;
+  private geoCoder;
+
+  @ViewChild('search')
+  public searchElementRef: ElementRef;
+
   userElements: User[];
   userHeadElements = ['ID', 'Nome', 'Role', ''];
   locationElements: Location[];
@@ -40,7 +50,11 @@ export class BackofficeComponent implements OnInit {
   disabled: false;
 
   constructor(private userService: UserService, private locationService: LocationService, public fb: FormBuilder,
-              private tokenStorage: TokenStorageService, private router: Router) {
+              private tokenStorage: TokenStorageService, private router: Router,
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+
+
     this.hiddenElement = false;
     this.hiddenElement2 = true;
     this.checkBox = false;
@@ -58,6 +72,28 @@ export class BackofficeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mapsAPILoader.load().then(() => {
+      this.setCurrentLocation();
+      this.geoCoder = new google.maps.Geocoder();
+
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement);
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          // get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          // verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          // set latitude, longitude and zoom
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+        });
+      });
+    });
+
     if (this.checkIfTokenIsValid() === true) {
       this.userService.getUsers().subscribe(data => {
           this.userElements = data.data;
@@ -85,6 +121,41 @@ export class BackofficeComponent implements OnInit {
       );
     } else {
     }
+  }
+
+  // Get Current Location Coordinates
+  private setCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.getAddress(this.latitude, this.longitude);
+      });
+    }
+  }
+
+  markerDragEnd($event: google.maps.MouseEvent) {
+    console.log($event);
+    this.latitude = $event.latLng.lat();
+    this.longitude = $event.latLng.lng();
+    this.getAddress(this.latitude, this.longitude);
+  }
+
+  getAddress(latitude, longitude) {
+    this.geoCoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
+      console.log(results);
+      console.log(status);
+      if (status === 'OK') {
+        if (results[0]) {
+          this.address = results[0].formatted_address;
+        } else {
+          window.alert('No results found');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+
+    });
   }
 
   get username() {
@@ -154,7 +225,15 @@ export class BackofficeComponent implements OnInit {
       this.userService.addUser(this.userValidationForm.value).subscribe(data => {
         console.log(data);
         this.userElements.push(data.user);
-      });
+      },
+        err => {
+          if (err.error.status === 404) {
+            this.tokenStorage.signOut();
+            this.router.navigate(['/login']).then(() =>
+              this.reloadPage()
+            );
+          }
+        });
     }
   }
 
