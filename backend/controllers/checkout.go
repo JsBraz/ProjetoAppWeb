@@ -73,7 +73,7 @@ func AddLocation(c *gin.Context) {
 		return
 	}
 	services.Db.Save(&location)
-	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Create successful!", "resourceId": location.ID})
+	c.JSON(http.StatusCreated, gin.H{"status": http.StatusCreated, "message": "Create successful!", "resourceId": location.ID, "location": location})
 }
 
 func DeleteLocation(c *gin.Context) {
