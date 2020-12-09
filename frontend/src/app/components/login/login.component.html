@@ -8,7 +8,7 @@
       <!-- Email -->
       <mdb-icon fas icon="envelope" class="prefix"></mdb-icon>
       <input mdbInput mdbValidate formControlName="username" minLength="8" maxLength="30" type="email"
-             class="form-control" id="formUsername"> <!--[(ngModel)]="check_name"-->
+             class="form-control" id="formUsername" >
       <label for="formUsername">Type your e-mail</label>
       <mdb-error *ngIf="username.invalid && (username.dirty || username.touched)">Input invalid</mdb-error>
       <mdb-success *ngIf="username.valid && (username.dirty || username.touched)">Input valid</mdb-success>

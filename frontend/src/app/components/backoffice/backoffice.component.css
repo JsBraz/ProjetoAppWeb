@@ -1,5 +1,5 @@
 .row{
-  padding: 10px
+  margin: 10px;
 }
 .background-color{
   color: white;
@@ -7,4 +7,9 @@
 .test:after {
   content: '\2807';
   font-size: 20px;
+}
+.col,
+[class*="col-"] {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
 }
