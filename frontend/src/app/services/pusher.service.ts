@@ -10,6 +10,7 @@ import {UsersLocationsModel} from '../models/usersLocations.model';
 export class PusherService {
   private locationModelSubject: Subject<LocationModel> = new Subject<LocationModel>();
   private usersLocationsModelSubject: Subject<UsersLocationsModel[]> = new Subject<UsersLocationsModel[]>();
+  private locationSubject: Subject<string> = new Subject<string>();
   private usersLocationsModel: UsersLocationsModel[] = [];
 
   private pusherClient: Pusher;
@@ -36,6 +37,13 @@ export class PusherService {
         this.usersLocationsModelSubject.next(users);
       }
     );
+
+    channel.bind(
+      'updateLocations',
+      (data: { refresh: string}) => {
+        this.locationSubject.next(data.refresh);
+      }
+    );
   }
 
   getFeedItems(): Observable<LocationModel> {
@@ -44,5 +52,9 @@ export class PusherService {
 
   getUserLocationsItems(): Observable<UsersLocationsModel[]> {
     return this.usersLocationsModelSubject.asObservable();
+  }
+
+  getLocationsItems(): Observable<string> {
+    return this.locationSubject.asObservable();
   }
 }

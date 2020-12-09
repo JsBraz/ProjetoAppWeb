@@ -22,6 +22,7 @@ interface Locations {
 export class MapComponent implements OnInit {
   public locationModels: LocationModel[] = [];
   private locationSubscription: Subscription;
+  private updateLocationSubscription: Subscription;
 
   markers: Locations[];
 
@@ -36,11 +37,18 @@ export class MapComponent implements OnInit {
       .getFeedItems()
       .subscribe((location: LocationModel) => {
         console.log('Update ' + location.id);
-        this.markers.forEach( (currentValue, index) => {
-          if (currentValue.ID == location.id){
+        this.markers.forEach((currentValue, index) => {
+          if (currentValue.ID == location.id) {
             currentValue.people = location.people;
           }
         });
+      });
+
+    this.updateLocationSubscription = pusherService
+      .getLocationsItems()
+      .subscribe((refresh: string) => {
+        console.log('Atualiza', refresh);
+        this.reloadPage();
       });
   }
 
@@ -54,7 +62,7 @@ export class MapComponent implements OnInit {
           this.markers = data.data;
         },
         err => {
-          if (err.error.status === 401){
+          if (err.error.status === 401) {
             this.tokenStorage.signOut();
             this.router.navigate(['/login']).then(r =>
               this.reloadPage()

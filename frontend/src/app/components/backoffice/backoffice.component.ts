@@ -5,6 +5,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TokenStorageService} from '../../services/token-storage.service';
 import {Router} from '@angular/router';
 import {MapsAPILoader} from '@agm/core';
+import {PusherService} from '../../services/pusher.service';
+import {HttpClient} from '@angular/common/http';
+import {LocationModel} from '../../models/location.model';
+import {Subscription} from 'rxjs';
 
 interface User {
   ID: number;
@@ -37,6 +41,7 @@ export class BackofficeComponent implements OnInit {
   @ViewChild('search')
   public searchElementRef: ElementRef;
 
+  private locationSubscription: Subscription;
   userElements: User[];
   userHeadElements = ['ID', 'Nome', 'Role', ''];
   locationElements: Location[];
@@ -48,13 +53,16 @@ export class BackofficeComponent implements OnInit {
   userValidationForm: FormGroup;
   locationValidationForm: FormGroup;
   disabled: false;
+  private httpClient: HttpClient;
 
   constructor(private userService: UserService, private locationService: LocationService, public fb: FormBuilder,
               private tokenStorage: TokenStorageService, private router: Router,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone) {
+              private ngZone: NgZone, private pusherService: PusherService,
+              private http: HttpClient) {
 
 
+    this.httpClient = http;
     this.hiddenElement = false;
     this.hiddenElement2 = true;
     this.checkBox = false;
@@ -69,6 +77,10 @@ export class BackofficeComponent implements OnInit {
       latitude: [null, Validators.required],
       longitude: [null, [Validators.required]]
     });
+    this.locationSubscription = pusherService
+      .getLocationsItems()
+      .subscribe(() => {}
+      );
   }
 
   ngOnInit(): void {
@@ -206,6 +218,7 @@ export class BackofficeComponent implements OnInit {
         this.locationElements.forEach((location, index) => {
           if (location.ID === id) {
             this.locationElements.splice(index, 1);
+            this.updateLocationMap();
           }
         });
       });
@@ -213,8 +226,6 @@ export class BackofficeComponent implements OnInit {
   }
 
   onUserSubmit() {
-
-
     if (this.checkIfTokenIsValid() === true) {
       if (this.userValidationForm.value.isAdmin === true) {
         this.userValidationForm.value.isAdmin = 'admin';
@@ -242,8 +253,20 @@ export class BackofficeComponent implements OnInit {
       this.locationService.addLocation(this.locationValidationForm.value).subscribe(data => {
         console.log(data);
         this.locationElements.push(data.location);
+        this.updateLocationMap();
       });
     }
+  }
+
+  updateLocationMap(){
+    this.http
+      .post('http://localhost:3000/updateLocation', {})
+      .toPromise()
+      .then(() => {
+      })
+      .catch(error => {
+        console.log(error.error.message);
+      });
   }
 
   checkIfTokenIsValid() {

@@ -52,11 +52,11 @@ app.post('/submit', (req, res) => {
 
     res
         .status(200)
-        .send({message: 'Post was successfully created', status: true});
+        .send({message: 'O counter da localização foi atualizado com sucesso', status: true});
 });
 
 app.post('/updateUsers', (req, res) => {
-    console.log("--> UpdateUsers");
+    console.log("--> UpdateUsers teste");
     const location = req.body.location;
     const userName = req.body.userName;
 
@@ -93,7 +93,18 @@ app.post('/updateUsers', (req, res) => {
     });
     res
         .status(200)
-        .send({message: 'Post was successfully created', status: true});
+        .send({message: 'Os utilizadores foram atualizadas com sucesso', status: true});
+});
+
+app.post('/updateLocation', (req, res) => {
+    console.log("--> UpdateLocation");
+
+    pusher.trigger('realtime-feeds', 'updateLocations', {
+        refresh: 'refresh'
+    });
+    res
+        .status(200)
+        .send({message: 'As localizações foram atualizadas com sucesso', status: true});
 });
 
 app.listen(port, function () {
