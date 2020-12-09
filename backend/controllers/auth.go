@@ -2,6 +2,8 @@ package controllers
 
 import (
 	// Local imports
+	"regexp"
+
 	"github.com/JsBraz/ProjetoAppWeb/backend/model"
 	"github.com/JsBraz/ProjetoAppWeb/backend/services"
 
@@ -36,13 +38,31 @@ func LoginHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "Username": usr.Username, "token": token, "Role": usr.Role})
 }
 
+func isEmailValid(e string) bool {
+	if len(e) < 3 && len(e) > 254 {
+		return false
+	}
+	return emailRegex.MatchString(e)
+}
+
+var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
 func RegisterHandler(c *gin.Context) {
 	var creds model.Users
-	creds.Role = "user"
+	if creds.Role == "" {
+		creds.Role = "user"
+	}
+
 	if err := c.ShouldBindJSON(&creds); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Bad request!"})
 		return
 	}
+
+	if !isEmailValid(creds.Username) {
+		c.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "message": "Invalid email"})
+		return
+	}
+
 	services.OpenDatabase()
 	value := services.Db.Save(&creds)
 	if value.RowsAffected == 0 {
@@ -52,7 +72,7 @@ func RegisterHandler(c *gin.Context) {
 	}
 
 	defer services.Db.Close()
-	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "User ID": creds.ID})
+	c.JSON(http.StatusOK, gin.H{"status": http.StatusOK, "message": "Success!", "ID": creds.ID, "user": creds})
 }
 
 func RefreshHandler(c *gin.Context) {
